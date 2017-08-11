@@ -7,6 +7,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - F4DConverter runs only in Windows 7 or later version of 64-bit OS.
 - This is window-based BUT FAKES as it runs in CLI mode. So you have to run this in cmd.exe.
 - Currently, this has bugs in converting .3ds, specially in making SimpleBuildingTexture3x3.png and applying transformation matrix on some data nodes.
+- Overall information about F4D is on www.mago3d.com (F4D_Specification.pdf gives only detailed data structures.)
 
 ## supported input formats ##
 - .ifc
@@ -61,4 +62,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - fixing critical bugs in handling .3ds with textures.
 - extracting parameters used in processing out to arguments.
 (ex : resolution of spatial octree / visibility indices, changing coordinate axis, making center of bounding box into local origin, level of triangle sorting in vbo, and so on)
-- removing Windows OS dependency, that is, making pure console app which can be run in Windows and Linux family.
+- removing Windows OS dependency, that is, making pure console app which can be run in both Windows and Linux family.
+- applying parallel processing, specially on visibility indexing.
+- converting multiple raw data file into single F4D folder.
+- Supporting tile pyramid made of only lego structures out of all F4D on service.
