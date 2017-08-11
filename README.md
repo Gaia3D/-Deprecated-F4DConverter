@@ -50,8 +50,8 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 >
 > "-outputFolder" is mandatory when -indexing is used. (So "-outputFolder" is mandatory in any case.)
 >
-> It takes very looooooong time to create visibility indices. If -oc is used, 99% of total conversion time is used in creaing visibility indices.
+> It takes very looooooong time to create visibility indices. If "-oc y" is used, 99% of total conversion time is used in creaing visibility indices.
 >
-> When -idPrefix and/or -idSuffix are used, the name of created F4D folder is F4D_|prefix|originalDataFileName|suffix|.
+> When "-idPrefix" and/or "-idSuffix" are used, the name of created F4D folder is F4D_|prefix|originalDataFileName|suffix|.
 >
-> All folder path injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
+> All folder paths injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
