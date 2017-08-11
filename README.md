@@ -38,3 +38,13 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 ### explanation of each argument ###
 - -inputFolder [rawDataFolder] : an absolute path of the folder where raw data files to be converted are.
 - -outputFolder [F4DFolder] : an absolute path of the folder where conversion results(F4D datasets) created.
+- -log [logFileFullPath] : an absolute path of a log file which is created after finishing conversion processes.
+- -idPrefix [prefix] : a prefix used in name of an F4D folder.
+- -idSuffix [suffix] : a suffix used in name of an F4D folder.
+- -oc [one of Y, y, N, n] : whether visibility indices for occlusion culling should be created or not. Default is NOT created.
+- -usf [numericValue] : unit scale facdtor. geometries in F4D described in meter.
+- -indexing [one of Y, y, N, n] : wheter objectIndexFile.ihe should be created or not. Default is NOT created
+> At least one of -inputFolder" and -indexing is mandatory. Both arguments can be used together.
+> -outputFolder and -log are mandatory when -inputFolder is used.
+> -outputFolder is mandatory when -indexing is used.
+> It takes very looooooong time to create visibility indices. If -oc is used, 99% of total conversion time is used in creaing visibility indices.
