@@ -23,3 +23,6 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - boost 1.62 : http://www.boost.org/users/history/version_1_62_0.html
 - SOIL : http://www.lonesock.net/soil.html
 - glew 2.0 : http://glew.sourceforge.net/
+
+※ ifcplusplus, Assimp, SOIL, and glew are for F4DConverter directly.
+※ Carve and OpenSceneGraph are for ifcplusplus.
