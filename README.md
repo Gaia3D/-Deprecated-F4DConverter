@@ -32,6 +32,6 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > Carve, boost, and OpenSceneGraph are for ifcplusplus.
 
 ## how to use ##
-sample usage :
-a. -inputFolder D:/data/data_3ds/DC_library_del_3DS -outputFolder D:/data/conversionResult -log D:/data/conversionResult/logTest.txt -idPrefix design_ -idSuffix _2017 -oc y -usf 0.01
-b. -outputFolder D:/dataConverted -indexing y
+### sample arguments ###
+- -inputFolder D:/data/data_3ds/DC_library_del_3DS -outputFolder D:/data/conversionResult -log D:/data/conversionResult/logTest.txt -idPrefix design_ -idSuffix _2017 -oc y -usf 0.01
+- -outputFolder D:/dataConverted -indexing y
