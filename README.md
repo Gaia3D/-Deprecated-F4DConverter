@@ -3,7 +3,7 @@ This application, F4DConverter, is for converting popular 3D model formats into 
 which is devised for Mago3D - 3D web geo-platform. (www.mago3d.com).
 This project is of Microsoft Visual Studio 2015 C++ project.
 
-# supported input formats
+## supported input formats ##
 
 - .ifc
 - .3ds
@@ -13,7 +13,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > Beside above formats, other formats which are supported by Assimp may be supported.(NOT TESTED!!)
 > In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not included.
 
-# necessary libraries for F4DConverter
+## necessary libraries for F4DConverter ##
 
 - OpenSceneGraph 3.4.0 : http://www.openscenegraph.org
 - ifcplusplus : https://github.com/ifcquery/ifcplusplus
