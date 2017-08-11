@@ -57,14 +57,14 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 >
 > All folder paths injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
 
-## stuffs to be developed from now on ##
+## stuffs under development or to be development  ##
 > Priority is not considered.
 - fixing critical bugs in handling .3ds with textures.
 - extracting parameters used in processing out to arguments.
 (ex : resolution of spatial octree / visibility indices, changing coordinate axis, making center of bounding box into local origin, level of triangle sorting in vbo, and so on)
 - removing Windows OS dependency, that is, making pure console app which can be run in both Windows and Linux family.
 - applying parallel processing, specially on visibility indexing.
-- converting multiple raw data file into single F4D folder.
+- converting multiple raw data files into single F4D folder.
 - Supporting lego structures of multiple LOD.
 - Designing and implementing tile pyramid made of only lego structures out of all F4D datasets on service.
 - Creating a texture image for lego structures regardless of whether raw data has texture images or not.
