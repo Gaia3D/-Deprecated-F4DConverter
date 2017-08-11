@@ -5,7 +5,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 
 ## developer's comments before reading more ##
 - F4DConverter runs only in Windows 7 or later version of 64-bit OS.
-- This is window-based BUT FAKES as it runs in CLI mode. So you have to run this in cmd.exe.
+- This is window-based BUT FAKES as it runs in CLI mode. So you have to run this in cmd.exe. During long conversion time due to large size of input data, the window changes as it is crashed, but it is NOT crashed. 
 - Currently, this has bugs in converting .3ds, specially in making SimpleBuildingTexture3x3.png and applying transformation matrix on some data nodes.
 - Full information about F4D is on www.mago3d.com (F4D_Specification.pdf gives only detailed F4D dataset structures.)
 
