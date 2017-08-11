@@ -3,6 +3,11 @@ This application, F4DConverter, is for converting popular 3D model formats into 
 which is devised for Mago3D - 3D web geo-platform. (www.mago3d.com).
 This project is of Microsoft Visual Studio 2015 C++ project.
 
+## developer's comments ##
+- F4DConverter runs only in Windows 7 or later version of 64-bit OS
+- This is window-based BUT FAKES as it runs in CLI mode. So you have to run this in cmd.exe
+- Currently, this has bugs in converting .3ds, specially in making SimpleBuildingTexture3x3.png and applying transformation matrix on some data nodes.
+
 ## supported input formats ##
 - .ifc
 - .3ds
@@ -26,7 +31,4 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 >
 > Carve, boost, and OpenSceneGraph are for ifcplusplus.
 
-## developer's comments ##
-- F4DConverter runs only in Windows 7 or later version of 64-bit OS
-- This is window-based BUT FAKES as it runs in CLI mode. So you have to run this in cmd.exe
-- Currently, this has bugs in converting .3ds, specially in making SimpleBuildingTexture3x3.png and applying transformation matrix on some data nodes.
+
