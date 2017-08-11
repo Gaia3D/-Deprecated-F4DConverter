@@ -57,7 +57,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 >
 > All folder paths injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
 
-## stuffs under development or to be development  ##
+## stuffs under development or to be developed ##
 > Priority is not considered.
 - fixing critical bugs in handling .3ds with textures.
 - extracting parameters used in processing out to arguments.
