@@ -41,9 +41,9 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - -log [logFileFullPath] : an absolute path of a log file which is created after finishing conversion processes.
 - -idPrefix [prefix] : a prefix used in name of an F4D folder.
 - -idSuffix [suffix] : a suffix used in name of an F4D folder.
-- -oc [one of Y, y, N, n] : whether visibility indices for occlusion culling should be created or not. Default is NOT created.
-- -usf [numericValue] : unit scale facdtor. geometries in F4D described in meter.
-- -indexing [one of Y, y, N, n] : wheter objectIndexFile.ihe should be created or not. Default is NOT created
+- -oc [one of Y, y, N, n] : whether visibility indices for occlusion culling should be created or not. "NOT created" is default.
+- -usf [numericValue] : unit scale facdtor. geometries in F4D are described in meter.
+- -indexing [one of Y, y, N, n] : wheter objectIndexFile.ihe should be created or not. "NOT created" is default.
 > At least one of -inputFolder" and -indexing is mandatory. Both arguments can be used together.
 >
 > -outputFolder and -log are mandatory when -inputFolder is used.
