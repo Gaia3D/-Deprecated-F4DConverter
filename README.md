@@ -35,7 +35,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 ### sample arguments ###
 - -inputFolder D:/data/data_3ds/DC_library_del_3DS -outputFolder D:/data/conversionResult -log D:/data/conversionResult/logTest.txt -idPrefix design_ -idSuffix _2017 -oc y -usf 0.01
 - -outputFolder D:/dataConverted -indexing y
-### explanation of each argument ###
+### detailed information ###
 - -inputFolder [rawDataFolder] : an absolute path of the folder where raw data files to be converted are.
 - -outputFolder [F4DFolder] : an absolute path of the folder where conversion results(F4D datasets) created.
 - -log [logFileFullPath] : an absolute path of a log file which is created after finishing conversion processes.
@@ -55,3 +55,9 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > When "-idPrefix" and/or "-idSuffix" are used, the name of created F4D folder is F4D_|prefix|originalDataFileName|suffix|.
 >
 > All folder paths injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
+
+## stuffs to be implemented from now on ##
+> Priority is not considered.
+- fix critical bugs in handling .3ds with textures.
+- extract parameters used in processing out to arguments.
+(ex : resolution of spatial octree / visibility indices, changing coordinate axis, making center of bounding box into local origin, level of triangle sorting in vbo, and so on) 
