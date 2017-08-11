@@ -11,7 +11,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - .dae
 
 > Beside above formats, other formats which are supported by Assimp may be supported.(NOT TESTED!!)
-In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not included.
+>> In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not included.
 
 ## necessary libraries for F4DConverter ##
 
@@ -24,4 +24,4 @@ In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not i
 - glew 2.0 : http://glew.sourceforge.net/
 
 > ifcplusplus, Assimp, SOIL, and glew are for F4DConverter directly.
-> Carve and OpenSceneGraph are for ifcplusplus.
+>> Carve, boost, and OpenSceneGraph are for ifcplusplus.
