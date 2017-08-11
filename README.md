@@ -4,7 +4,6 @@ which is devised for Mago3D - 3D web geo-platform. (www.mago3d.com).
 This project is of Microsoft Visual Studio 2015 C++ project.
 
 ## supported input formats ##
-
 - .ifc
 - .3ds
 - .obj
@@ -15,7 +14,6 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not included.
 
 ## necessary libraries for F4DConverter ##
-
 - OpenSceneGraph 3.4.0 : http://www.openscenegraph.org
 - ifcplusplus : https://github.com/ifcquery/ifcplusplus
 - Carve : https://github.com/ifcquery/ifcplusplus
@@ -27,3 +25,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > ifcplusplus, Assimp, SOIL, and glew are for F4DConverter directly.
 >
 > Carve, boost, and OpenSceneGraph are for ifcplusplus.
+
+## developer's comments ##
+- F4DConverter runs only in Windows 7 or later version of 64-bit OS
+- This is window-based BUT FAKES as it runs in CLI mode. So you have to run this en cmd.exe
