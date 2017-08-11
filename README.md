@@ -65,4 +65,6 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - removing Windows OS dependency, that is, making pure console app which can be run in both Windows and Linux family.
 - applying parallel processing, specially on visibility indexing.
 - converting multiple raw data file into single F4D folder.
-- Supporting tile pyramid made of only lego structures out of all F4D on service.
+- Supporting lego structures of multiple LOD.
+- Designing and implementing tile pyramid made of only lego structures out of all F4D datasets on service.
+- Creating a texture image for lego structures regardless of whether raw data has texture images or not.
