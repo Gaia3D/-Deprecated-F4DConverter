@@ -51,3 +51,5 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 > -outputFolder is mandatory when -indexing is used.
 >
 > It takes very looooooong time to create visibility indices. If -oc is used, 99% of total conversion time is used in creaing visibility indices.
+>
+> When -idPrefix and/or -idSuffix are used, the name of created F4D folder is F4D_[prefix][originalDataFileName][suffix].
