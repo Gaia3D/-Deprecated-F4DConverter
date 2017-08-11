@@ -45,6 +45,9 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - -usf [numericValue] : unit scale facdtor. geometries in F4D described in meter.
 - -indexing [one of Y, y, N, n] : wheter objectIndexFile.ihe should be created or not. Default is NOT created
 > At least one of -inputFolder" and -indexing is mandatory. Both arguments can be used together.
+>
 > -outputFolder and -log are mandatory when -inputFolder is used.
+>
 > -outputFolder is mandatory when -indexing is used.
+>
 > It takes very looooooong time to create visibility indices. If -oc is used, 99% of total conversion time is used in creaing visibility indices.
