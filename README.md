@@ -10,4 +10,5 @@ which is devised for Mago3D - 3D web geo-platform. (www.mago3d.com).
 - .dae
 
 ※ Beside above formats, other formats which are supported by Assimp may be supported.(NOT TESTED!!)
+
 ※ In this version, .JT(Jupiter Tessellation, a kind of cad design format) is not included.
