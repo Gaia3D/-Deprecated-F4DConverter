@@ -56,8 +56,9 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 >
 > All folder paths injected MUST exist before running the converter. F4DConverter doesn't create folders automatically.
 
-## stuffs to be implemented from now on ##
+## stuffs to be developed from now on ##
 > Priority is not considered.
-- fix critical bugs in handling .3ds with textures.
-- extract parameters used in processing out to arguments.
-(ex : resolution of spatial octree / visibility indices, changing coordinate axis, making center of bounding box into local origin, level of triangle sorting in vbo, and so on) 
+- fixing critical bugs in handling .3ds with textures.
+- extracting parameters used in processing out to arguments.
+(ex : resolution of spatial octree / visibility indices, changing coordinate axis, making center of bounding box into local origin, level of triangle sorting in vbo, and so on)
+- removing Windows OS dependency, that is, making pure console app which can be run in Windows and Linux family.
