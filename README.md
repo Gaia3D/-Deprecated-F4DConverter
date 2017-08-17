@@ -38,7 +38,7 @@ This project is of Microsoft Visual Studio 2015 C++ project.
 - -outputFolder D:/dataConverted -indexing y
 ### detailed information ###
 - -inputFolder [rawDataFolder] : an absolute path of the folder where raw data files to be converted are.
-- -outputFolder [F4DFolder] : an absolute path of the folder where conversion results(F4D datasets) created.
+- -outputFolder [F4DFolder] : an absolute path of the folder where conversion results(F4D datasets) are created.
 - -log [logFileFullPath] : an absolute path of a log file which is created after finishing conversion processes.
 - -idPrefix [prefix] : a prefix used in name of an F4D folder.
 - -idSuffix [suffix] : a suffix used in name of an F4D folder.
