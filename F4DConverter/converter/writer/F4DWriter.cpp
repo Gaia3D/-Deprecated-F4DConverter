@@ -414,19 +414,27 @@ bool F4DWriter::writeReferencesAndModels(std::wstring& referencePath, std::wstri
 				}
 			}
 
-			// texture file info
-			textureCount = 1;
-			fwrite(&textureCount, sizeof(unsigned int), 1, file);
+			// texture file info if exists
+			if(bTextureCoordinate)
+			{
+				textureCount = 1;
+				fwrite(&textureCount, sizeof(unsigned int), 1, file);
 
-			std::string textureType("diffuse");
-			unsigned int typeLength = (unsigned int)textureType.length();
-			fwrite(&typeLength, sizeof(unsigned int), 1, file);
-			fwrite(textureType.c_str(), sizeof(char), typeLength, file);
+				std::string textureType("diffuse");
+				unsigned int typeLength = (unsigned int)textureType.length();
+				fwrite(&typeLength, sizeof(unsigned int), 1, file);
+				fwrite(textureType.c_str(), sizeof(char), typeLength, file);
 
-			std::string textureName(CW2A(reference->getStringAttribute(L"textureName").c_str()));
-			unsigned int nameLength = (unsigned int)textureName.length();
-			fwrite(&nameLength, sizeof(unsigned int), 1, file);
-			fwrite(textureName.c_str(), sizeof(char), nameLength, file);
+				std::string textureName(CW2A(reference->getStringAttribute(L"textureName").c_str()));
+				unsigned int nameLength = (unsigned int)textureName.length();
+				fwrite(&nameLength, sizeof(unsigned int), 1, file);
+				fwrite(textureName.c_str(), sizeof(char), nameLength, file);
+			}
+			else
+			{
+				textureCount = 0;
+				fwrite(&textureCount, sizeof(unsigned int), 1, file);
+			}
 		}
 
 		writeVisibilityIndices(file, (static_cast<gaia3d::SpatialOctreeBox*>(leafBox))->exteriorOcclusionInfo);
