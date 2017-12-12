@@ -330,7 +330,7 @@ void ConversionProcessor::trimVertexNormals(std::vector<gaia3d::TrianglePolyhedr
 						planeNormal.x, planeNormal.y, planeNormal.z,
 						true);
 
-					*(triangle->getNormal()) = planeNormal;
+					
 
 					anglePNormalAndVNormal0 = 180.0 / M_PI * gaia3d::GeometryUtility::angleBetweenTwoVectors(planeNormal.x, planeNormal.y, planeNormal.z,
 						triangle->getVertices()[0]->normal.x,
@@ -355,7 +355,11 @@ void ConversionProcessor::trimVertexNormals(std::vector<gaia3d::TrianglePolyhedr
 						gaia3d::Vertex* tempVertex = triangle->getVertices()[0];
 						triangle->getVertices()[0] = triangle->getVertices()[1];
 						triangle->getVertices()[1] = tempVertex;
+
+						triangle->setNormal(-planeNormal.x, -planeNormal.y, -planeNormal.z);
 					}
+					else
+						*(triangle->getNormal()) = planeNormal;
 				}
 			}
 		}
@@ -2069,23 +2073,17 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 	glUniform1i(samplerUniform, 0);
 
 	int hasTexture_location = glGetUniformLocation(shaderProgram, "hasTexture");
-	//int colorAux_location = glGetUniformLocation(shaderProgram, "vColorAux");
+	int colorAux_location = glGetUniformLocation(shaderProgram, "vColorAux");
 	//int bUseLighting_location = glGetUniformLocation(shaderProgram, "useLighting");
 
 	//glUniform1i(bUseLighting_location, false);
 
-	glUniform1i(hasTexture_location, true);
-	glEnableVertexAttribArray(texCoord_location);
+	//glUniform1i(hasTexture_location, true);
 
 	size_t meshCount = meshes.size();
 	for (size_t i = 0; i < meshCount; i++)
 	{
 		gaia3d::TrianglePolyhedron* polyhedron = meshes[i];
-
-		// lego용 texture를 만들기 위해 그리는 작업을 수행하는 것이므로
-		// texture coordinate가 없으면 의미가 없다.
-		if (!polyhedron->doesThisHaveTextureCoordinates())
-			continue;
 
 		size_t vboCount = polyhedron->getVbos().size();
 		// 이럴 일은 없겠지만 vbo가 없다는 것은 실체가 없는 객체이므로
@@ -2093,13 +2091,9 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 		if (vboCount == 0)
 			continue;
 
-		// 이 polyhedron을 그릴 때 필요한 texture를 activate 시킨다.
-		std::wstring textureName = polyhedron->getStringAttribute(std::wstring(L"textureName"));
-		unsigned int textureId = bindingResult[textureName];
-		glBindTexture(GL_TEXTURE_2D, textureId);
-
 		GLfloat* vertices, *textureCoordinates;
 		GLushort* indices;
+		unsigned int textureCoordinateArrayId;
 		for (size_t j = 0; j < vboCount; j++)
 		{
 			vertices = textureCoordinates = NULL;
@@ -2115,18 +2109,11 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 			vertices = new GLfloat[vertexCount * 3];
 			memset(vertices, 0x00, sizeof(GLfloat) * 3 * vertexCount);
 
-			// make texture coordinate array
-			textureCoordinates = new GLfloat[vertexCount * 2];
-			memset(textureCoordinates, 0x00, sizeof(GLfloat) * 2 * vertexCount);
-
 			for (size_t k = 0; k < vertexCount; k++)
 			{
 				vertices[k * 3] = float(vbo->vertices[k]->position.x);
 				vertices[k * 3 + 1] = float(vbo->vertices[k]->position.y);
 				vertices[k * 3 + 2] = float(vbo->vertices[k]->position.z);
-
-				textureCoordinates[k * 2] = float(vbo->vertices[k]->textureCoordinate[0]);
-				textureCoordinates[k * 2 + 1] = float(vbo->vertices[k]->textureCoordinate[1]);
 			}
 
 			// make index array
@@ -2146,14 +2133,6 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 			glVertexAttribPointer(position_location, 3, GL_FLOAT, GL_FALSE, 3 * 4, (void*)0);    //send positions on pipe 0
 			delete[] vertices;
 
-			// bind texture coordinate array
-			unsigned int textureCoordinateArrayId;
-			glGenBuffers(1, &textureCoordinateArrayId);
-			glBindBuffer(GL_ARRAY_BUFFER, textureCoordinateArrayId);
-			glBufferData(GL_ARRAY_BUFFER, vertexCount * 2 * 4, textureCoordinates, GL_STATIC_DRAW);
-			glVertexAttribPointer(texCoord_location, 2, GL_FLOAT, GL_FALSE, 2 * 4, (void*)0);
-			delete[] textureCoordinates;
-
 			// bind index array
 			unsigned int indexArrayId;
 			glGenBuffers(1, &indexArrayId);// generate a new VBO and get the associated ID
@@ -2161,11 +2140,61 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexCount * 2, indices, GL_STATIC_DRAW);// upload data to VBO
 			delete[] indices;
 
+			if (polyhedron->doesThisHaveTextureCoordinates())
+			{
+				// 이 polyhedron을 그릴 때 필요한 texture를 activate 시킨다.
+				std::wstring textureName = polyhedron->getStringAttribute(std::wstring(L"textureName"));
+				if (bindingResult.find(textureName) != bindingResult.end())
+				{
+					unsigned int textureId = bindingResult[textureName];
+					glBindTexture(GL_TEXTURE_2D, textureId);
+				}
+
+				glUniform1i(hasTexture_location, true);
+
+				// make texture coordinate array
+				textureCoordinates = new GLfloat[vertexCount * 2];
+				memset(textureCoordinates, 0x00, sizeof(GLfloat) * 2 * vertexCount);
+				for (size_t k = 0; k < vertexCount; k++)
+				{
+					textureCoordinates[k * 2] = float(vbo->vertices[k]->textureCoordinate[0]);
+					textureCoordinates[k * 2 + 1] = float(vbo->vertices[k]->textureCoordinate[1]);
+				}
+
+				// bind texture coordinate array
+				glGenBuffers(1, &textureCoordinateArrayId);
+				glBindBuffer(GL_ARRAY_BUFFER, textureCoordinateArrayId);
+				glBufferData(GL_ARRAY_BUFFER, vertexCount * 2 * 4, textureCoordinates, GL_STATIC_DRAW);
+				glVertexAttribPointer(texCoord_location, 2, GL_FLOAT, GL_FALSE, 2 * 4, (void*)0);
+				delete[] textureCoordinates;
+			}
+			else
+			{
+				glUniform1i(hasTexture_location, false);
+				float colorR, colorG, colorB;
+
+				if (polyhedron->getColorMode() == gaia3d::SingleColor)
+				{
+					colorR = GetRedValue(polyhedron->getSingleColor()) / 255.0f;
+					colorG = GetGreenValue(polyhedron->getSingleColor()) / 255.0f;
+					colorB = GetBlueValue(polyhedron->getSingleColor()) / 255.0f;
+				}
+				else
+				{
+					colorR = GetRedValue(polyhedron->getVertices()[0]->color) / 255.0f;
+					colorG = GetGreenValue(polyhedron->getVertices()[0]->color) / 255.0f;
+					colorB = GetBlueValue(polyhedron->getVertices()[0]->color) / 255.0f;
+				}
+
+				glUniform3f(colorAux_location, colorR, colorG, colorB);
+			}
+
 			glDrawElements(GL_TRIANGLES, (int)indexCount, GL_UNSIGNED_SHORT, 0);
 
 			glDeleteBuffers(1, &vertexArrayId);
-			glDeleteBuffers(1, &textureCoordinateArrayId);
 			glDeleteBuffers(1, &indexArrayId);
+			if (polyhedron->doesThisHaveTextureCoordinates())
+				glDeleteBuffers(1, &textureCoordinateArrayId);
 		}
 	}
 
