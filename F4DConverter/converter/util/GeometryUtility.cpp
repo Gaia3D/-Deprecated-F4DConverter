@@ -241,7 +241,10 @@ namespace gaia3d
 		double triMinY = (y0 > y1) ? ((y1 > y2) ? y2 : y1) : ((y0 > y2) ? y2 : y0);
 		double triMinZ = (z0 > z1) ? ((z1 > z2) ? z2 : z1) : ((z0 > z2) ? z2 : z0);
 
-		if(triMaxX <= minX || triMinX >= maxX || triMaxY <= minY || triMinY >= maxY || triMaxZ <= minZ || triMinZ >= maxZ)
+		double tolerance = 0.000001;
+		if(triMaxX < minX - tolerance || triMinX > maxX + tolerance ||
+			triMaxY < minY - tolerance || triMinY > maxY + tolerance ||
+			triMaxZ < minZ - tolerance || triMinZ > maxZ + tolerance)
 			return false;
 
 		// 2. box projection on triangle normal test
@@ -260,12 +263,26 @@ namespace gaia3d
 		test[6] = a*maxX + b*maxY + c*maxZ + d;
 		test[7] = a*minX + b*maxY + c*maxZ + d;
 		bool testPassed = false;
+		char countTouchedPoint = 0;
+		if (test[0] >= -10E-6 && test[0] <= 10E-6)
+			countTouchedPoint++;
+
 		for(int i = 1; i < 8; i++)
 		{
 			if(test[0]*test[i] < -10E-8)
 			{
 				testPassed = true;
 				break;
+			}
+
+			if (test[i] >= -10E-6 && test[i] <= 10E-6)
+			{
+				countTouchedPoint++;
+				if (countTouchedPoint > 2)
+				{
+					testPassed = true;
+					break;
+				}
 			}
 		}
 
