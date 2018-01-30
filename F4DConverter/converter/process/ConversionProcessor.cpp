@@ -2143,7 +2143,7 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 			if (polyhedron->doesThisHaveTextureCoordinates())
 			{
 				// 이 polyhedron을 그릴 때 필요한 texture를 activate 시킨다.
-				std::wstring textureName = polyhedron->getStringAttribute(std::wstring(L"textureName"));
+				std::wstring textureName = polyhedron->getStringAttribute(std::wstring(TextureName));
 				if (bindingResult.find(textureName) != bindingResult.end())
 				{
 					unsigned int textureId = bindingResult[textureName];

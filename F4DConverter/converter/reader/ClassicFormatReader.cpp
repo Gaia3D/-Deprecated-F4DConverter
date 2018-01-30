@@ -52,7 +52,7 @@ bool proceedMesh(aiMesh* mesh,
 			textureContainer.insert(std::map<std::wstring, std::wstring>::value_type(fileName, fullPath));
 		}
 
-		polyhedron->addStringAttribute(std::wstring(L"textureName"), fileName);
+		polyhedron->addStringAttribute(std::wstring(TextureName), fileName);
 	}
 
 	// check if color info exists.

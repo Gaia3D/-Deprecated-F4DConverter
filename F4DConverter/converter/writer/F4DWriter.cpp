@@ -319,9 +319,9 @@ bool F4DWriter::writeReferencesAndModels(std::wstring& referencePath, std::wstri
 			fwrite(&referenceId, sizeof(unsigned int), 1, file);
 
 			// reference object id
-			if(reference->doesStringAttributeExist(std::wstring(L"objectId")))
+			if(reference->doesStringAttributeExist(std::wstring(ObjectGuid)))
 			{
-				std::wstring wObjectId = reference->getStringAttribute(std::wstring(L"objectId"));
+				std::wstring wObjectId = reference->getStringAttribute(std::wstring(ObjectGuid));
 				objectId = std::string(CW2A(wObjectId.c_str()));
 				objectIdLength = (unsigned char)objectId.length();
 				fwrite(&objectIdLength, sizeof(unsigned char), 1, file);
@@ -425,7 +425,7 @@ bool F4DWriter::writeReferencesAndModels(std::wstring& referencePath, std::wstri
 				fwrite(&typeLength, sizeof(unsigned int), 1, file);
 				fwrite(textureType.c_str(), sizeof(char), typeLength, file);
 
-				std::string textureName(CW2A(reference->getStringAttribute(L"textureName").c_str()));
+				std::string textureName(CW2A(reference->getStringAttribute(TextureName).c_str()));
 				unsigned int nameLength = (unsigned int)textureName.length();
 				fwrite(&nameLength, sizeof(unsigned int), 1, file);
 				fwrite(textureName.c_str(), sizeof(char), nameLength, file);

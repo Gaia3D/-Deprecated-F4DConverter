@@ -26,3 +26,7 @@
 
 #define TriangleSizeLevels 4
 #define TriangleSizeThresholds {1.0, 0.5, 0.1, 0.05}
+
+// attribute key names
+#define ObjectGuid L"objectGuid"
+#define TextureName L"textureName"

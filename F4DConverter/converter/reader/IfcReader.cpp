@@ -84,6 +84,7 @@ bool IfcReader::readRawDataFile(std::wstring& filePath)
 		}
 
 		polyhedron->setId(container.size());
+		polyhedron->addStringAttribute(std::wstring(ObjectGuid), loader->getGuid(i));
 
 		container.push_back(polyhedron);
 	}

@@ -39,6 +39,7 @@ public:
 
 	virtual size_t getPolyhedronCount();
 	virtual float* getRepresentativeColor(size_t polyhedronIndex);
+	virtual std::wstring getGuid(size_t polyhedronIndex);
 	virtual size_t getVertexCount(size_t polyhedronIndex);
 	virtual double* getVertexPositions(size_t polyhedronIndex);
 	virtual size_t getSurfaceCount(size_t polyhedronIndex);
@@ -61,6 +62,7 @@ private:
 		double* vertices;
 		float color[4];
 		std::vector<Surface*> surfaces;
+		std::wstring guid;
 	};
 
 	std::vector<Polyhedron*> polyhedrons;
@@ -334,6 +336,9 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 					else
 						memset(polyhedron->color, 0x00, sizeof(float) * 4);
 
+					// extract and allocate guid into this polyhedron
+					polyhedron->guid = ifc_product->m_GlobalId->m_value;
+
 					// add this polyhedron
 					polyhedrons.push_back(polyhedron);
 				}
@@ -357,6 +362,11 @@ size_t IfcLoader::getPolyhedronCount()
 float* IfcLoader::getRepresentativeColor(size_t polyhedronIndex)
 {
 	return polyhedrons[polyhedronIndex]->color;
+}
+
+std::wstring IfcLoader::getGuid(size_t polyhedronIndex)
+{
+	return polyhedrons[polyhedronIndex]->guid;
 }
 
 size_t IfcLoader::getVertexCount(size_t polyhedronIndex)
