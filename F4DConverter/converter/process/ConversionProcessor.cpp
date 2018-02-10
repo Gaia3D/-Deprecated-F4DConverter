@@ -268,8 +268,8 @@ bool ConversionProcessor::proceedConversion(std::vector<gaia3d::TrianglePolyhedr
 	assignReferencesIntoEachSpatialOctrees(thisSpatialOctree, allMeshes, fullBbox, false, LeafSpatialOctreeSize);
 
 	// make upper LOD(rougher LOD)
-	bool bMakeTextureCoordinate = allTextureInfo.empty() ? false : true;
-	makeLegoStructure(thisSpatialOctree, MinLegoSize, legos, bMakeTextureCoordinate);
+	
+	makeLegoStructure(thisSpatialOctree, MinLegoSize, legos, fullBbox, true);
 
 	// make visibility indices
 	if(bOcclusionCulling)
@@ -294,11 +294,12 @@ bool ConversionProcessor::proceedConversion(std::vector<gaia3d::TrianglePolyhedr
 		applyOcclusionInformationOnSpatialOctree(thisSpatialOctree, interiorOcclusionOctree, exteriorOcclusionOctree);
 	}
 
+	// make lego texture
+	makeLegoTexture(allMeshes, allTextureInfo);
+
+	bool bMakeTextureCoordinate = allTextureInfo.empty() ? false : true;
 	if (bMakeTextureCoordinate)
 	{
-		// make lego texture
-		makeLegoTexture(allMeshes, allTextureInfo);
-
 		// rebuild original texture
 		normalizeTextures(allTextureInfo);
 	}
@@ -464,10 +465,7 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 	size_t meshCount = meshes.size();
 	size_t surfaceCount, triangleCount;
 	gaia3d::Vbo* vbo;
-	size_t vertexInsertedCount;
 	gaia3d::Vertex** vertices;
-	bool bExist;
-	size_t existingVertexIndex;
 	std::vector<gaia3d::Triangle*> sortedTriangles;
 	unsigned char sizeLevels = TriangleSizeLevels;
 	double sizeThresholds[TriangleSizeLevels] = TriangleSizeThresholds;
@@ -479,6 +477,8 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 
 		vbo = new gaia3d::Vbo;
 		meshes[i]->getVbos().push_back(vbo);
+
+		std::map<gaia3d::Vertex*, size_t> addedVertices;
 
 		surfaceCount = meshes[i]->getSurfaces().size();
 		for(size_t j = 0;j < surfaceCount; j++)
@@ -514,31 +514,22 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 
 					vbo = new gaia3d::Vbo;
 					meshes[i]->getVbos().push_back(vbo);
+
+					addedVertices.clear();
 				}
 
 				vertices = sortedTriangles[k]->getVertices();
 				for(size_t m = 0; m < 3; m++)
 				{
-					bExist = false;
-					vertexInsertedCount = vbo->vertices.size();
-					for(size_t n = 0; n < vertexInsertedCount; n++)
+					if (addedVertices.find(vertices[m]) == addedVertices.end())
 					{
-						if(vbo->vertices[n] == vertices[m])
-						{
-							bExist = true;
-							existingVertexIndex = n;
-							break;
-						}
-					}
-
-					if(bExist)
-					{
-						vbo->indices.push_back((unsigned short)existingVertexIndex);
+						vbo->indices.push_back((unsigned short)vbo->vertices.size());
+						addedVertices.insert(std::map<gaia3d::Vertex*, size_t>::value_type(vertices[m], vbo->vertices.size()));
+						vbo->vertices.push_back(vertices[m]);
 					}
 					else
 					{
-						vbo->indices.push_back((unsigned short)vbo->vertices.size());
-						vbo->vertices.push_back(vertices[m]);
+						vbo->indices.push_back((unsigned short)addedVertices[vertices[m]]);
 					}
 				}
 			}
@@ -717,7 +708,7 @@ void ConversionProcessor::applyOcclusionInformationOnSpatialOctree(gaia3d::Spati
 	}
 }
 
-void ConversionProcessor::makeLegoStructure(gaia3d::SpatialOctreeBox& spatialOctree, double minLegoSize, std::map<size_t, gaia3d::TrianglePolyhedron*>& result, bool bMakeTexutreCoordinate)
+void ConversionProcessor::makeLegoStructure(gaia3d::SpatialOctreeBox& spatialOctree, double minLegoSize, std::map<size_t, gaia3d::TrianglePolyhedron*>& result, gaia3d::BoundingBox& textureBbox, bool bMakeTexutreCoordinate)
 {
 	std::vector<gaia3d::OctreeBox*> leafBoxes;
 	spatialOctree.getAllLeafBoxes(leafBoxes, true);
@@ -731,7 +722,7 @@ void ConversionProcessor::makeLegoStructure(gaia3d::SpatialOctreeBox& spatialOct
 		bbox.isInitialized = false;
 		bbox.addPoint(leafBoxes[i]->minX, leafBoxes[i]->minY, leafBoxes[i]->minZ);
 		bbox.addPoint(leafBoxes[i]->maxX, leafBoxes[i]->maxY, leafBoxes[i]->maxZ);
-		lego = makeLegoStructure(leafBoxes[i]->meshes, bbox, minLegoSize, bMakeTexutreCoordinate);
+		lego = makeLegoStructure(leafBoxes[i]->meshes, bbox, textureBbox, minLegoSize, bMakeTexutreCoordinate);
 		if(lego != NULL)
 			result.insert(std::map<size_t, gaia3d::TrianglePolyhedron*>::value_type(((gaia3d::SpatialOctreeBox*)leafBoxes[i])->octreeId, lego));
 	}
@@ -1445,12 +1436,12 @@ void ConversionProcessor::extractMatchedReferencesFromOcclusionInfo(gaia3d::Visi
 	}
 }
 
-gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<gaia3d::TrianglePolyhedron*>& meshes, gaia3d::BoundingBox& bbox, double minLegoSize, bool bMakeTexutreCoordinate)
+gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<gaia3d::TrianglePolyhedron*>& meshes, gaia3d::BoundingBox& seedBbox, gaia3d::BoundingBox& textureBbox, double minLegoSize, bool bMakeTexutreCoordinate)
 {
 	// octree for making lego blocks
 	gaia3d::SpatialOctreeBox legoOctree(NULL);
-	double maxLength = bbox.getMaxLength();
-	legoOctree.setSize(bbox.minX, bbox.minY, bbox.minZ, bbox.minX + maxLength, bbox.minY + maxLength, bbox.minZ + maxLength);
+	double maxLength = seedBbox.getMaxLength();
+	legoOctree.setSize(seedBbox.minX, seedBbox.minY, seedBbox.minZ, seedBbox.minX + maxLength, seedBbox.minY + maxLength, seedBbox.minZ + maxLength);
 	legoOctree.meshes.insert(legoOctree.meshes.end(), meshes.begin(), meshes.end());
 	legoOctree.makeTreeOfUnfixedDepth(minLegoSize, false);
 
@@ -1506,6 +1497,12 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 	gaia3d::Triangle* triangle[12];
 	joinedLegoCount = joinedLegoBlocks.size();
 	double minS, maxS, minT, maxT, s, t;
+	double trimmedMinX, trimmedMinY, trimmedMinZ, trimmedMaxX, trimmedMaxY, trimmedMaxZ;
+	double cx, cy, cz;
+	double range = textureBbox.getMaxLength() / 2.0;
+	textureBbox.getCenterPoint(cx, cy, cz);
+	trimmedMinX = cx - range; trimmedMinY = cy - range; trimmedMinZ = cz - range;
+	trimmedMaxX = cx + range; trimmedMaxY = cy + range; trimmedMaxZ = cz + range;
 	for(size_t i = 0; i < joinedLegoCount; i++)
 	{
 		gaia3d::LegoBlock* lego = joinedLegoBlocks[i];
@@ -1609,7 +1606,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				{
 				case 0: // bottom;
 				{
-					minS = lego->minX, maxS = lego->maxX, minT = lego->minY, maxT = lego->maxY;
+					minS = trimmedMinX, maxS = trimmedMaxX, minT = trimmedMinY, maxT = trimmedMaxY;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.x - minS) / (maxS - minS);
@@ -1623,7 +1620,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				break;
 				case 1: // top
 				{
-					minS = lego->minX, maxS = lego->maxX, minT = lego->minY, maxT = lego->maxY;
+					minS = trimmedMinX, maxS = trimmedMaxX, minT = trimmedMinY, maxT = trimmedMaxY;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.x - minS) / (maxS - minS);
@@ -1637,7 +1634,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				break;
 				case 2: // front
 				{
-					minS = lego->minX, maxS = lego->maxX, minT = lego->minZ, maxT = lego->maxZ;
+					minS = trimmedMinX, maxS = trimmedMaxX, minT = trimmedMinZ, maxT = trimmedMaxZ;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.x - minS) / (maxS - minS);
@@ -1651,7 +1648,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				break;
 				case 3: // rear
 				{
-					minS = lego->minX, maxS = lego->maxX, minT = lego->minZ, maxT = lego->maxZ;
+					minS = trimmedMinX, maxS = trimmedMaxX, minT = trimmedMinZ, maxT = trimmedMaxZ;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.x - minS) / (maxS - minS);
@@ -1665,7 +1662,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				break;
 				case 4: // left
 				{
-					minS = lego->minY, maxS = lego->maxY, minT = lego->minZ, maxT = lego->maxZ;
+					minS = trimmedMinY, maxS = trimmedMaxY, minT = trimmedMinZ, maxT = trimmedMaxZ;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.y - minS) / (maxS - minS);
@@ -1680,7 +1677,7 @@ gaia3d::TrianglePolyhedron* ConversionProcessor::makeLegoStructure(std::vector<g
 				break;
 				case 5: // right
 				{
-					minS = lego->minY, maxS = lego->maxY, minT = lego->minZ, maxT = lego->maxZ;
+					minS = trimmedMinY, maxS = trimmedMaxY, minT = trimmedMinZ, maxT = trimmedMaxZ;
 					for (size_t k = 0; k < 3; k++)
 					{
 						s = (triangle[j]->getVertices()[k]->position.y - minS) / (maxS - minS);

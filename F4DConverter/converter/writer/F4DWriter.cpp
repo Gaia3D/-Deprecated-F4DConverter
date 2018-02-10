@@ -425,7 +425,7 @@ bool F4DWriter::writeReferencesAndModels(std::wstring& referencePath, std::wstri
 				fwrite(&typeLength, sizeof(unsigned int), 1, file);
 				fwrite(textureType.c_str(), sizeof(char), typeLength, file);
 
-				std::string textureName(CW2A(reference->getStringAttribute(TextureName).c_str()));
+				std::string textureName(CW2A(reference->getStringAttribute(TextureName).c_str(), CP_UTF8));
 				unsigned int nameLength = (unsigned int)textureName.length();
 				fwrite(&nameLength, sizeof(unsigned int), 1, file);
 				fwrite(textureName.c_str(), sizeof(char), nameLength, file);

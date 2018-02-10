@@ -28,6 +28,8 @@ bool proceedMesh(aiMesh* mesh,
 	// check if texture exists.
 	bool textureExistsForMesh = false;
 	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	if (mesh->mMaterialIndex == 291)
+		int x = 0;
 	if (material->GetTextureCount(aiTextureType_DIFFUSE) > 0 && mesh->mTextureCoords[0] != NULL)
 	{
 		textureExistsForMesh = true;
@@ -36,23 +38,31 @@ bool proceedMesh(aiMesh* mesh,
 		// collect texture info
 		aiString texturePath;
 		material->GetTexture(aiTextureType_DIFFUSE, 0, &texturePath);
-		std::wstring fullPath = folder + L"/" + std::wstring(CA2W(texturePath.C_Str()));
-		size_t lastSlashIndex = fullPath.find_last_of(L"\\/");
-		std::wstring fileName;
-		if (lastSlashIndex == std::wstring::npos)
-			fileName = fullPath;
-		else
+		int neededLength = MultiByteToWideChar(CP_UTF8, 0, texturePath.C_Str(), -1, NULL, 0);
+		if (neededLength > 0)
 		{
-			size_t fileNameLength = fullPath.length() - lastSlashIndex - 1;
-			fileName = fullPath.substr(lastSlashIndex + 1, fileNameLength);
-		}
+			wchar_t* receiver = new wchar_t[neededLength];
+			memset(receiver, 0x00, sizeof(wchar_t)*neededLength);
+			MultiByteToWideChar(CP_UTF8, 0, texturePath.C_Str(), -1, receiver, neededLength);
+			std::wstring fullPath = folder + L"/" + std::wstring(receiver);
+			delete[] receiver; receiver = NULL;
+			size_t lastSlashIndex = fullPath.find_last_of(L"\\/");
+			std::wstring fileName;
+			if (lastSlashIndex == std::wstring::npos)
+				fileName = fullPath;
+			else
+			{
+				size_t fileNameLength = fullPath.length() - lastSlashIndex - 1;
+				fileName = fullPath.substr(lastSlashIndex + 1, fileNameLength);
+			}
 
-		if (textureContainer.find(fileName) == textureContainer.end())
-		{
-			textureContainer.insert(std::map<std::wstring, std::wstring>::value_type(fileName, fullPath));
-		}
+			if (textureContainer.find(fileName) == textureContainer.end())
+			{
+				textureContainer.insert(std::map<std::wstring, std::wstring>::value_type(fileName, fullPath));
+			}
 
-		polyhedron->addStringAttribute(std::wstring(TextureName), fileName);
+			polyhedron->addStringAttribute(std::wstring(TextureName), fileName);
+		}
 	}
 
 	// check if color info exists.

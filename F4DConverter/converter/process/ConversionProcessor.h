@@ -123,7 +123,7 @@ protected:
 													gaia3d::VisionOctreeBox& interiorOcclusionOctree,
 													gaia3d::VisionOctreeBox& exteriorOcclusionOctree);
 
-	void makeLegoStructure(gaia3d::SpatialOctreeBox& octree, double minLegoSize, std::map<size_t, gaia3d::TrianglePolyhedron*>& result, bool bMakeTexutreCoordinate);
+	void makeLegoStructure(gaia3d::SpatialOctreeBox& octree, double minLegoSize, std::map<size_t, gaia3d::TrianglePolyhedron*>& result, gaia3d::BoundingBox& textureBbox, bool bMakeTexutreCoordinate);
 
 	void makeLegoTexture(std::vector<gaia3d::TrianglePolyhedron*>& meshes, std::map<std::wstring, std::wstring>& textureInfo);
 
@@ -152,7 +152,7 @@ protected:
 													gaia3d::VisionOctreeBox& info,
 													std::vector<gaia3d::TrianglePolyhedron*>& meshesToBeCompared);
 
-	gaia3d::TrianglePolyhedron* makeLegoStructure(std::vector<gaia3d::TrianglePolyhedron*>& meshes, gaia3d::BoundingBox& bbox, double minLegoSize, bool bMakeTexutreCoordinate);
+	gaia3d::TrianglePolyhedron* makeLegoStructure(std::vector<gaia3d::TrianglePolyhedron*>& meshes, gaia3d::BoundingBox& seedBbox, gaia3d::BoundingBox& textureBbox, double minLegoSize, bool bMakeTexutreCoordinate);
 
 	void sortTrianglesBySize(std::vector<gaia3d::Triangle*>& inputTriangles,
 							unsigned char sizeLevels,
