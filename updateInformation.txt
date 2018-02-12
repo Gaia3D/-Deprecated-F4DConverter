@@ -1,5 +1,5 @@
 - 2018. 2. 10
---changed the algorithm used in VBO to check if vertices to be added is already added in VBO or notVBO
+--changed the algorithm used in VBO to check if vertices to be added is already added in VBO or not
    (using vector searching -> using map searching)
 --changed way of retrieving texture file names from Assimp
    (multibyte to wide char -> UTF-8 to wide char)
