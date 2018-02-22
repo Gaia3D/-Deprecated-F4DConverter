@@ -135,10 +135,10 @@ bool F4DWriter::write()
 				return false;
 			}
 		}
-
-		writeLegoTexture(resultPath);
 		writeTextures(imagePath);
 	}
+
+	writeLegoTexture(resultPath);
 
 	return true;
 }

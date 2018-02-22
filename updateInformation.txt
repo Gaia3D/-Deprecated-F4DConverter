@@ -2,6 +2,8 @@
 --fixed a critical bug where calling an OpenGL API to draw meshes caused a memory access violation.
   (disabling vertex attrib array for texture coordinate before drawing meshes without textures were missed.)
 --some memory-leaks detected. these will be fixed soon.
+--changed the way of saving a lego structure texture file.
+  (saves it without any condition now)
 
 - 2018. 2. 10
 --changed the algorithm used in VBO to check if vertices to be added is already added in VBO or not
