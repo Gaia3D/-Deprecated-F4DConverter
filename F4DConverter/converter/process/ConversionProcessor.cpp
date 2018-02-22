@@ -2168,6 +2168,7 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 			else
 			{
 				glUniform1i(hasTexture_location, false);
+				glDisableVertexAttribArray(texCoord_location);
 				float colorR, colorG, colorB;
 
 				if (polyhedron->getColorMode() == gaia3d::SingleColor)
