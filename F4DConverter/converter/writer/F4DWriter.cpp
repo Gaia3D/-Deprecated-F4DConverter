@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 
 #include <gdiplus.h>
@@ -235,13 +235,13 @@ bool F4DWriter::writeModels(FILE* f, std::vector<gaia3d::TrianglePolyhedron*>& m
 
 			// index count
 			indexCount =  (unsigned int)model->getVbos()[j]->indices.size();
-			fwrite(&indexCount, sizeof(unsigned int), 1, f); // ÀüÃ¼ index°³¼ö
-			sizeLevels = TriangleSizeLevels; // »ï°¢ÇüÀ» Å©±âº°·Î Á¤·ÄÇÒ ¶§ Àû¿ëµÈ Å©±â °³¼ö
+			fwrite(&indexCount, sizeof(unsigned int), 1, f); // ì „ì²´ indexê°œìˆ˜
+			sizeLevels = TriangleSizeLevels; // ì‚¼ê°í˜•ì„ í¬ê¸°ë³„ë¡œ ì •ë ¬í•  ë•Œ ì ìš©ëœ í¬ê¸° ê°œìˆ˜
 			fwrite(&sizeLevels, sizeof(unsigned char), 1, f);
 			for(unsigned char k = 0; k < sizeLevels; k++)
-				thresholds[k] = (float)model->getVbos()[j]->triangleSizeThresholds[k]; // »ï°¢ÇüÀ» Å©±âº°·Î Á¤·ÄÇÒ ¶§ Àû¿ëµÈ Å©±âµé
+				thresholds[k] = (float)model->getVbos()[j]->triangleSizeThresholds[k]; // ì‚¼ê°í˜•ì„ í¬ê¸°ë³„ë¡œ ì •ë ¬í•  ë•Œ ì ìš©ëœ í¬ê¸°ë“¤
 			fwrite(thresholds, sizeof(float), sizeLevels, f);
-			fwrite(model->getVbos()[j]->indexMarker, sizeof(unsigned int), sizeLevels, f); // Á¤·ÄµÈ vertexµéÀÇ index¿¡¼­ Å©±â ±âÁØÀÌ º¯°æµÇ´Â ÃÖÃÊ »ï°¢ÇüÀÇ vertexÀÇ index À§Ä¡ marker
+			fwrite(model->getVbos()[j]->indexMarker, sizeof(unsigned int), sizeLevels, f); // ì •ë ¬ëœ vertexë“¤ì˜ indexì—ì„œ í¬ê¸° ê¸°ì¤€ì´ ë³€ê²½ë˜ëŠ” ìµœì´ˆ ì‚¼ê°í˜•ì˜ vertexì˜ index ìœ„ì¹˜ marker
 			for(size_t k = 0; k < indexCount; k++)
 			{
 				index = models[i]->getVbos()[j]->indices[k];

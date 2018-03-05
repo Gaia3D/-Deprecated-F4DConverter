@@ -1,4 +1,4 @@
-// ./converter/ConverterManager.cpp : ±¸Çö ÆÄÀÏÀÔ´Ï´Ù.
+ï»¿// ./converter/ConverterManager.cpp : êµ¬í˜„ íŒŒì¼ì…ë‹ˆë‹¤.
 //
 
 #include "stdafx.h"
@@ -36,7 +36,7 @@ CConverterManager::~CConverterManager()
 }
 
 
-// CConverterManager ¸â¹ö ÇÔ¼ö
+// CConverterManager ë©¤ë²„ í•¨ìˆ˜
 
 bool CConverterManager::initialize(HDC hDC, int width, int height)
 {
@@ -232,7 +232,7 @@ void CConverterManager::processDataFolder(std::wstring inputFolder)
 	std::wstring fullId;
 	for (size_t i = 0; i < dataFileCount; i++)
 	{
-		// 1. raw data fileÀ» ÇÏ³ª¾¿ º¯È¯
+		// 1. raw data fileì„ í•˜ë‚˜ì”© ë³€í™˜
 		std::wstring dataFileFullPath = inputFolder + std::wstring(L"/") + dataFiles[i];
 
 		aReader* reader = ReaderFactory::makeReader(dataFileFullPath);
@@ -263,9 +263,9 @@ void CConverterManager::processDataFolder(std::wstring inputFolder)
 		processor->addAttribute(std::wstring(L"id"), fullId);
 
 
-		// 2. º¯È¯ °á°ú¿¡¼­ bbox centerpoint¸¦ ·ÎÄÃ ¿øÁ¡À¸·Î ÀÌµ¿½ÃÅ°´Â º¯È¯Çà·Ä ÃßÃâ
+		// 2. ë³€í™˜ ê²°ê³¼ì—ì„œ bbox centerpointë¥¼ ë¡œì»¬ ì›ì ìœ¼ë¡œ ì´ë™ì‹œí‚¤ëŠ” ë³€í™˜í–‰ë ¬ ì¶”ì¶œ
 
-		// 3. º¯È¯ °á°ú¸¦ ÀúÀå
+		// 3. ë³€í™˜ ê²°ê³¼ë¥¼ ì €ì¥
 		F4DWriter writer(processor);
 		writer.setWriteFolder(outputFolder);
 		if (!writer.write())

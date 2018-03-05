@@ -1,10 +1,10 @@
-
-// Mago3dConverterView.cpp : CF4DConverterView Å¬·¡½ºÀÇ ±¸Çö
+ï»¿
+// Mago3dConverterView.cpp : CF4DConverterView í´ëž˜ìŠ¤ì˜ êµ¬í˜„
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS´Â ¹Ì¸® º¸±â, Ãà¼ÒÆÇ ±×¸² ¹× °Ë»ö ÇÊÅÍ Ã³¸®±â¸¦ ±¸ÇöÇÏ´Â ATL ÇÁ·ÎÁ§Æ®¿¡¼­ Á¤ÀÇÇÒ ¼ö ÀÖÀ¸¸ç
-// ÇØ´ç ÇÁ·ÎÁ§Æ®¿Í ¹®¼­ ÄÚµå¸¦ °øÀ¯ÇÏµµ·Ï ÇØ ÁÝ´Ï´Ù.
+// SHARED_HANDLERSëŠ” ë¯¸ë¦¬ ë³´ê¸°, ì¶•ì†ŒíŒ ê·¸ë¦¼ ë° ê²€ìƒ‰ í•„í„° ì²˜ë¦¬ê¸°ë¥¼ êµ¬í˜„í•˜ëŠ” ATL í”„ë¡œì íŠ¸ì—ì„œ ì •ì˜í•  ìˆ˜ ìžˆìœ¼ë©°
+// í•´ë‹¹ í”„ë¡œì íŠ¸ì™€ ë¬¸ì„œ ì½”ë“œë¥¼ ê³µìœ í•˜ë„ë¡ í•´ ì¤ë‹ˆë‹¤.
 #ifndef SHARED_HANDLERS
 #include "F4DConverter.h"
 #endif
@@ -31,11 +31,11 @@ BEGIN_MESSAGE_MAP(CF4DConverterView, CView)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-// CF4DConverterView »ý¼º/¼Ò¸ê
+// CF4DConverterView ìƒì„±/ì†Œë©¸
 
 CF4DConverterView::CF4DConverterView()
 {
-	// TODO: ¿©±â¿¡ »ý¼º ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ìƒì„± ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 
 }
 
@@ -45,13 +45,13 @@ CF4DConverterView::~CF4DConverterView()
 
 BOOL CF4DConverterView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: CREATESTRUCT cs¸¦ ¼öÁ¤ÇÏ¿© ¿©±â¿¡¼­
-	//  Window Å¬·¡½º ¶Ç´Â ½ºÅ¸ÀÏÀ» ¼öÁ¤ÇÕ´Ï´Ù.
+	// TODO: CREATESTRUCT csë¥¼ ìˆ˜ì •í•˜ì—¬ ì—¬ê¸°ì—ì„œ
+	//  Window í´ëž˜ìŠ¤ ë˜ëŠ” ìŠ¤íƒ€ì¼ì„ ìˆ˜ì •í•©ë‹ˆë‹¤.
 
 	return CView::PreCreateWindow(cs);
 }
 
-// CF4DConverterView ±×¸®±â
+// CF4DConverterView ê·¸ë¦¬ê¸°
 
 void CF4DConverterView::OnDraw(CDC* /*pDC*/)
 {
@@ -60,11 +60,11 @@ void CF4DConverterView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
-	// TODO: ¿©±â¿¡ ¿ø½Ã µ¥ÀÌÅÍ¿¡ ´ëÇÑ ±×¸®±â ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì›ì‹œ ë°ì´í„°ì— ëŒ€í•œ ê·¸ë¦¬ê¸° ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 }
 
 
-// CF4DConverterView Áø´Ü
+// CF4DConverterView ì§„ë‹¨
 
 #ifdef _DEBUG
 void CF4DConverterView::AssertValid() const
@@ -77,7 +77,7 @@ void CF4DConverterView::Dump(CDumpContext& dc) const
 	CView::Dump(dc);
 }
 
-CF4DConverterDoc* CF4DConverterView::GetDocument() const // µð¹ö±×µÇÁö ¾ÊÀº ¹öÀüÀº ÀÎ¶óÀÎÀ¸·Î ÁöÁ¤µË´Ï´Ù.
+CF4DConverterDoc* CF4DConverterView::GetDocument() const // ë””ë²„ê·¸ë˜ì§€ ì•Šì€ ë²„ì „ì€ ì¸ë¼ì¸ìœ¼ë¡œ ì§€ì •ë©ë‹ˆë‹¤.
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CF4DConverterDoc)));
 	return (CF4DConverterDoc*)m_pDocument;
@@ -131,7 +131,7 @@ void CF4DConverterView::activateConverter()
 }
 
 
-// CF4DConverterView ¸Þ½ÃÁö Ã³¸®±â
+// CF4DConverterView ë©”ì‹œì§€ ì²˜ë¦¬ê¸°
 
 
 void CF4DConverterView::OnActivateView(BOOL bActivate, CView* pActivateView, CView* pDeactiveView)

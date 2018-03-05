@@ -1,8 +1,8 @@
-#pragma once
+ï»¿#pragma once
 
 #include <string>
 
-// CConverterManager ¸í·É ´ë»óÀÔ´Ï´Ù.
+// CConverterManager ëª…ë ¹ ëŒ€ìƒì…ë‹ˆë‹¤.
 
 class aReader;
 class ConversionProcessor;

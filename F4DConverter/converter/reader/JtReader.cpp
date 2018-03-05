@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 
 #ifdef SHIJTFORMAT
@@ -123,7 +123,7 @@ bool JtReader::extractGeometryInformation(int depth,
 					material = std::dynamic_pointer_cast<JTData_MaterialAttribute>(node->Attributes.at (i));
 			}
 
-			// Transform matrix°¡ ÇÊ¼ö ¿ä¼Ò°¡ ¾Æ´ÔÀ¸·Î º¯°æ
+			// Transform matrixê°€ í•„ìˆ˜ ìš”ì†Œê°€ ì•„ë‹˜ìœ¼ë¡œ ë³€ê²½
 			/*
 			if(transform == NULL)
 			{

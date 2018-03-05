@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 
 #include "OctreeBox.h"
@@ -246,13 +246,13 @@ namespace gaia3d
 
 			for(size_t j = 0; j < childCount; j++)
 			{
-				// 1Â÷ Å×½ºÆ® : bbox ±³Â÷ Å×½ºÆ®
+				// 1ì°¨ í…ŒìŠ¤íŠ¸ : bbox êµì°¨ í…ŒìŠ¤íŠ¸
 				if(children[j]->maxX + tolerance < bbox.minX || children[j]->minX > bbox.maxX + tolerance ||
 					children[j]->maxY + tolerance < bbox.minY || children[j]->minY > bbox.maxY + tolerance ||
 					children[j]->maxZ + tolerance < bbox.minZ || children[j]->minZ > bbox.maxZ + tolerance )
 					continue;
 
-				// 2Â÷ Å×½ºÆ® : mesh¸¦ ÀÌ·ç´Â °¢°¢ÀÇ »ï°¢ÇüÀ¸·Î ±³Â÷ Å×½ºÆ®
+				// 2ì°¨ í…ŒìŠ¤íŠ¸ : meshë¥¼ ì´ë£¨ëŠ” ê°ê°ì˜ ì‚¼ê°í˜•ìœ¼ë¡œ êµì°¨ í…ŒìŠ¤íŠ¸
 				anyTriangleIntersectsWithOctree = false;
 				surfaceCount = meshes[i]->getSurfaces().size();
 				for(size_t k = 0; k < surfaceCount; k++)
@@ -260,7 +260,7 @@ namespace gaia3d
 					triangleCount = meshes[i]->getSurfaces()[k]->getTriangles().size();
 					for(size_t l = 0; l < triangleCount; l++)
 					{
-						// »ï°¢Çü¿¡¼­ ²ÀÁöÁ¡ 3°³ À§Ä¡ Á¤º¸ ÃßÃâ
+						// ì‚¼ê°í˜•ì—ì„œ ê¼­ì§€ì  3ê°œ ìœ„ì¹˜ ì •ë³´ ì¶”ì¶œ
 						for(size_t m = 0; m < 3; m++)
 						{
 							v[m][0] = meshes[i]->getSurfaces()[k]->getTriangles()[l]->getVertices()[m]->position.x;
@@ -268,7 +268,7 @@ namespace gaia3d
 							v[m][2] = meshes[i]->getSurfaces()[k]->getTriangles()[l]->getVertices()[m]->position.z;
 						}
 
-						// »ï°¢Çü°ú ÀÚ½Ä octree°¡ ±³Â÷ÇÏ´ÂÁö Å×½ºÆ®
+						// ì‚¼ê°í˜•ê³¼ ìì‹ octreeê°€ êµì°¨í•˜ëŠ”ì§€ í…ŒìŠ¤íŠ¸
 						if( GeometryUtility::doesTriangleIntersectWithBox(v[0][0], v[0][1], v[0][2],
 																		v[1][0], v[1][1], v[1][2],
 																		v[2][0], v[2][1], v[2][2],

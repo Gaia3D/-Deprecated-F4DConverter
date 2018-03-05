@@ -1,4 +1,4 @@
-
+ï»¿
 #include "stdafx.h"
 
 #include <Gdiplus.h>
@@ -38,9 +38,9 @@ ConversionProcessor::~ConversionProcessor()
 
 bool ConversionProcessor::initialize(HDC hDC, int width, int height)
 {
-	// TODO(khj 20170210) : NYI ¿©±â¼­ SceneControlVariables¸¦ ÃÊ±âÈ­ ÇØ¾ß ÇÑ´Ù.
+	// TODO(khj 20170210) : NYI ì—¬ê¸°ì„œ SceneControlVariablesë¥¼ ì´ˆê¸°í™” í•´ì•¼ í•œë‹¤.
 
-	// dc¿Í ¿¬°á
+	// dcì™€ ì—°ê²°
 	scv->m_myhDC = hDC;
 	scv->m_width = width;
 	scv->m_height = height;
@@ -221,7 +221,7 @@ void ConversionProcessor::clear()
 
 void ConversionProcessor::changeSceneControlVariables()
 {
-	// TODO(khj 20170210) : NYI ¿©±â¼­ SceneControlVariables¸¦ ¹Ù²Ü ¼ö ÀÖ´Ù.
+	// TODO(khj 20170210) : NYI ì—¬ê¸°ì„œ SceneControlVariablesë¥¼ ë°”ê¿€ ìˆ˜ ìˆë‹¤.
 }
 
 void ConversionProcessor::addAttribute(std::wstring key, std::wstring value)
@@ -491,10 +491,10 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 			{
 				if(vbo->vertices.size() >= VboVertexMaxCount)
 				{
-					// vboÀÇ maximum vertex°³¼ö°¡ ´Ù Â÷¸é
-					// »õ·Î ¸¸µé¾îÁÖ¾î¾ß ÇÑ´Ù.
-					// »õ·Î ¸¸µé±â Àü¿¡ sizeº°·Î sorting ÇØµĞ index marker¸¦ ÀÌ¿ëÇØ
-					// ±âÁ¸ÀÇ vbo¿¡ sizeº° index marker¸¦ ³Ö¾î¾ß ÇÑ´Ù.
+					// vboì˜ maximum vertexê°œìˆ˜ê°€ ë‹¤ ì°¨ë©´
+					// ìƒˆë¡œ ë§Œë“¤ì–´ì£¼ì–´ì•¼ í•œë‹¤.
+					// ìƒˆë¡œ ë§Œë“¤ê¸° ì „ì— sizeë³„ë¡œ sorting í•´ë‘” index markerë¥¼ ì´ìš©í•´
+					// ê¸°ì¡´ì˜ vboì— sizeë³„ index markerë¥¼ ë„£ì–´ì•¼ í•œë‹¤.
 					for(size_t m = 0; m < TriangleSizeLevels; m++)
 					{
 						if(eachSizeStartingIndices[m]*3 > vbo->indices.size())
@@ -534,7 +534,7 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 				}
 			}
 
-			// ¸¶Áö¸· vbo¿¡ sizeº° index marker¸¦ ³Ö¾îÁà¾ß ÇÑ´Ù.
+			// ë§ˆì§€ë§‰ vboì— sizeë³„ index markerë¥¼ ë„£ì–´ì¤˜ì•¼ í•œë‹¤.
 			for(size_t m = 0; m < TriangleSizeLevels; m++)
 			{
 				if(eachSizeStartingIndices[m]*3 > vbo->indices.size())
@@ -555,7 +555,7 @@ void ConversionProcessor::makeVboObjects(std::vector<gaia3d::TrianglePolyhedron*
 
 		if(bBind)
 		{
-			// TODO(khj 20170323) : NYI ³ªÁß¿¡ off-screen rendering ¶§¹®¿¡ gpu¸¦ »ç¿ëÇØ¾ß ÇÑ´Ù¸é ¿©±â¼­ Ãß°¡ ±¸Çö ÇØ¾ß ÇÑ´Ù.
+			// TODO(khj 20170323) : NYI ë‚˜ì¤‘ì— off-screen rendering ë•Œë¬¸ì— gpuë¥¼ ì‚¬ìš©í•´ì•¼ í•œë‹¤ë©´ ì—¬ê¸°ì„œ ì¶”ê°€ êµ¬í˜„ í•´ì•¼ í•œë‹¤.
 		}
 	}
 }
@@ -775,7 +775,7 @@ void ConversionProcessor::normalizeTextures(std::map<std::wstring, std::wstring>
 			fileExt.compare(L"tif") != 0 && fileExt.compare(L"tiff") != 0)
 			continue;
 
-		// texture file full path¸¦ ÀÌ¿ëÇØ bitmapÀ» ¸¸µç´Ù.
+		// texture file full pathë¥¼ ì´ìš©í•´ bitmapì„ ë§Œë“ ë‹¤.
 		Gdiplus::Bitmap bmp(fullPath.c_str());
 
 		unsigned int bmpWidth =  bmp.GetWidth();
@@ -786,7 +786,7 @@ void ConversionProcessor::normalizeTextures(std::map<std::wstring, std::wstring>
 
 		unsigned int bmpWidthResized, bmpHeightResized;
 
-		// width°¡ 2^n ÇüÅÂ°¡ ¾Æ´Ï¸é 2^n ÇüÅÂ·Î resize ÇØ¾ß ÇÑ´Ù.
+		// widthê°€ 2^n í˜•íƒœê°€ ì•„ë‹ˆë©´ 2^n í˜•íƒœë¡œ resize í•´ì•¼ í•œë‹¤.
 		if ((bmpWidth & (bmpWidth - 1)) == 0)
 			bmpWidthResized = bmpWidth;
 		else
@@ -799,7 +799,7 @@ void ConversionProcessor::normalizeTextures(std::map<std::wstring, std::wstring>
 			bmpWidthResized = ((bmpWidth - (1 << prevPower)) > ((1 << nextPower) - bmpWidth)) ? 1 << nextPower : 1 << prevPower;
 		}
 
-		// height°¡ 2^n ÇüÅÂ°¡ ¾Æ´Ï¸é 2^n ÇüÅÂ·Î resize ÇØ¾ß ÇÑ´Ù.
+		// heightê°€ 2^n í˜•íƒœê°€ ì•„ë‹ˆë©´ 2^n í˜•íƒœë¡œ resize í•´ì•¼ í•œë‹¤.
 		if ((bmpHeight & (bmpHeight - 1)) == 0)
 			bmpHeightResized = bmpHeight;
 		else
@@ -812,14 +812,14 @@ void ConversionProcessor::normalizeTextures(std::map<std::wstring, std::wstring>
 			bmpHeightResized = ((bmpHeight - (1 << prevPower)) > ((1 << nextPower) - bmpHeight)) ? 1 << nextPower : 1 << prevPower;
 		}
 
-		// resize µÈ width / height¸¦ ÀÌ¿ëÇØ resized bitmapÀ» ¸¸µç´Ù.
+		// resize ëœ width / heightë¥¼ ì´ìš©í•´ resized bitmapì„ ë§Œë“ ë‹¤.
 		Gdiplus::PixelFormat sourcePixelFormat = bmp.GetPixelFormat();
 		Gdiplus::Bitmap resizedBmp(bmpWidthResized, bmpHeightResized, sourcePixelFormat);
 
 		Gdiplus::Graphics graphics(&resizedBmp);
 		graphics.DrawImage(&bmp, 0, 0, bmpWidthResized, bmpHeightResized);
 
-		// resized bitmapÀ¸·ÎºÎÅÍ bitmap array¸¦ ¾ò´Â´Ù.
+		// resized bitmapìœ¼ë¡œë¶€í„° bitmap arrayë¥¼ ì–»ëŠ”ë‹¤.
 		Gdiplus::Rect rect(0, 0, bmpWidthResized, bmpHeightResized);
 		Gdiplus::BitmapData bmpData;
 		resizedBmp.LockBits(&rect, Gdiplus::ImageLockMode::ImageLockModeRead, PixelFormat32bppARGB, &bmpData);
@@ -837,7 +837,7 @@ void ConversionProcessor::normalizeTextures(std::map<std::wstring, std::wstring>
 
 		resizedBmp.UnlockBits(&bmpData);
 
-		// ÃÖÁ¾ °á°ú¹°À» container¿¡ ³Ö´Â´Ù.
+		// ìµœì¢… ê²°ê³¼ë¬¼ì„ containerì— ë„£ëŠ”ë‹¤.
 		resizedTextures[itr->first] = pDest;
 		allTextureWidths[itr->first] = bmpWidthResized;
 		allTextureHeights[itr->first] = bmpHeightResized;
@@ -2083,8 +2083,8 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 		gaia3d::TrianglePolyhedron* polyhedron = meshes[i];
 
 		size_t vboCount = polyhedron->getVbos().size();
-		// ÀÌ·² ÀÏÀº ¾ø°ÚÁö¸¸ vbo°¡ ¾ø´Ù´Â °ÍÀº ½ÇÃ¼°¡ ¾ø´Â °´Ã¼ÀÌ¹Ç·Î
-		// filtering ÇÑ´Ù.
+		// ì´ëŸ´ ì¼ì€ ì—†ê² ì§€ë§Œ vboê°€ ì—†ë‹¤ëŠ” ê²ƒì€ ì‹¤ì²´ê°€ ì—†ëŠ” ê°ì²´ì´ë¯€ë¡œ
+		// filtering í•œë‹¤.
 		if (vboCount == 0)
 			continue;
 
@@ -2139,7 +2139,7 @@ void ConversionProcessor::drawMeshesWithTextures(std::vector<gaia3d::TrianglePol
 
 			if (polyhedron->doesThisHaveTextureCoordinates())
 			{
-				// ÀÌ polyhedronÀ» ±×¸± ¶§ ÇÊ¿äÇÑ texture¸¦ activate ½ÃÅ²´Ù.
+				// ì´ polyhedronì„ ê·¸ë¦´ ë•Œ í•„ìš”í•œ textureë¥¼ activate ì‹œí‚¨ë‹¤.
 				std::wstring textureName = polyhedron->getStringAttribute(std::wstring(TextureName));
 				if (bindingResult.find(textureName) != bindingResult.end())
 				{

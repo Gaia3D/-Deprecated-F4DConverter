@@ -1,5 +1,5 @@
-
-// F4DConverterDoc.h : CF4DConverterDoc Å¬·¡½ºÀÇ ÀÎÅÍÆäÀÌ½º
+ï»¿
+// F4DConverterDoc.h : CF4DConverterDoc í´ë˜ìŠ¤ì˜ ì¸í„°í˜ì´ìŠ¤
 //
 
 
@@ -8,17 +8,17 @@
 
 class CF4DConverterDoc : public CDocument
 {
-protected: // serialization¿¡¼­¸¸ ¸¸µé¾îÁı´Ï´Ù.
+protected: // serializationì—ì„œë§Œ ë§Œë“¤ì–´ì§‘ë‹ˆë‹¤.
 	CF4DConverterDoc();
 	DECLARE_DYNCREATE(CF4DConverterDoc)
 
-// Æ¯¼ºÀÔ´Ï´Ù.
+// íŠ¹ì„±ì…ë‹ˆë‹¤.
 public:
 
-// ÀÛ¾÷ÀÔ´Ï´Ù.
+// ì‘ì—…ì…ë‹ˆë‹¤.
 public:
 
-// ÀçÁ¤ÀÇÀÔ´Ï´Ù.
+// ì¬ì •ì˜ì…ë‹ˆë‹¤.
 public:
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
@@ -27,7 +27,7 @@ public:
 	virtual void OnDrawThumbnail(CDC& dc, LPRECT lprcBounds);
 #endif // SHARED_HANDLERS
 
-// ±¸ÇöÀÔ´Ï´Ù.
+// êµ¬í˜„ì…ë‹ˆë‹¤.
 public:
 	virtual ~CF4DConverterDoc();
 #ifdef _DEBUG
@@ -37,12 +37,12 @@ public:
 
 protected:
 
-// »ı¼ºµÈ ¸Ş½ÃÁö ¸Ê ÇÔ¼ö
+// ìƒì„±ëœ ë©”ì‹œì§€ ë§µ í•¨ìˆ˜
 protected:
 	DECLARE_MESSAGE_MAP()
 
 #ifdef SHARED_HANDLERS
-	// °Ë»ö Ã³¸®±â¿¡ ´ëÇÑ °Ë»ö ÄÜÅÙÃ÷¸¦ ¼³Á¤ÇÏ´Â µµ¿ì¹Ì ÇÔ¼ö
+	// ê²€ìƒ‰ ì²˜ë¦¬ê¸°ì— ëŒ€í•œ ê²€ìƒ‰ ì½˜í…ì¸ ë¥¼ ì„¤ì •í•˜ëŠ” ë„ìš°ë¯¸ í•¨ìˆ˜
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 };

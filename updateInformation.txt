@@ -1,3 +1,9 @@
+- 2018. 3. 05
+-- changed the code pages of all .cpp and .h files into UTF-8(with BOM)
+-- changed the code page of F4DConverter.rc into UTF-8
+   (to make the .rc file compilable, '#pragma code_page(65001)' was added into the .rc file)
+-- some APIs were added into IfcLoader.dll to handle attribute extraction   
+
 - 2018. 2. 22
 --fixed a critical bug where calling an OpenGL API to draw meshes caused a memory access violation.
   (disabling vertex attrib array for texture coordinate before drawing meshes without textures were missed.)

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "../geometry/Point3D.h"
 #include "../geometry/Matrix4.h"

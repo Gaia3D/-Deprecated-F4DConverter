@@ -1,4 +1,4 @@
-// IfcLoader.cpp : DLL ÀÀ¿ë ÇÁ·Î±×·¥À» À§ÇØ ³»º¸³½ ÇÔ¼ö¸¦ Á¤ÀÇÇÕ´Ï´Ù.
+ï»¿// IfcLoader.cpp : DLL ì‘ìš© í”„ë¡œê·¸ë¨ì„ ìœ„í•´ ë‚´ë³´ë‚¸ í•¨ìˆ˜ë¥¼ ì •ì˜í•©ë‹ˆë‹¤.
 //
 
 #include "IfcLoader.h"
@@ -8,6 +8,26 @@
 #include "ifcpp/reader/IfcPPReaderSTEP.h"
 #include "ifcpp/IFC4/include/IfcSite.h"
 #include "ifcpp/IFC4/include/IfcSpace.h"
+
+// for property value
+#include "ifcpp/IFC4/include/IfcAreaMeasure.h"
+#include "ifcpp/IFC4/include/IfcBoolean.h"
+#include "ifcpp/IFC4/include/IfcIdentifier.h"
+#include "ifcpp/IFC4/include/IfcInteger.h"
+#include "ifcpp/IFC4/include/IfcLabel.h"
+#include "ifcpp/IFC4/include/IfcLengthMeasure.h"
+#include "ifcpp/IFC4/include/IfcPlaneAngleMeasure.h"
+#include "ifcpp/IFC4/include/IfcPositiveLengthMeasure.h"
+#include "ifcpp/IFC4/include/IfcReal.h"
+#include "ifcpp/IFC4/include/IfcVolumeMeasure.h"
+
+// for unit
+#include "ifcpp/IFC4/include/IfcDerivedUnit.h"
+#include "ifcpp/IFC4/include/IfcNamedUnit.h"
+#include "ifcpp/IFC4/include/IfcMonetaryUnit.h"
+#include "ifcpp/IFC4/include/IfcUnitEnum.h"
+
+#include "./json/json.h"
 
 
 
@@ -46,7 +66,26 @@ public:
 	virtual size_t getTrialgleCount(size_t polyhedronIndex, size_t surfaceIndex);
 	virtual size_t* getTriangleIndices(size_t polyhedronIndex, size_t surfaceIndex);
 
+	virtual bool loadOnlyPropertiesFromIfc(std::wstring& filePath);
+	virtual void setAttributesExtraction(bool bOn);
+	virtual std::string getObjectAttributes();
+	virtual std::string getProjectAttributes();
+
+#ifdef TMPTEST
+	virtual size_t getAttributeTypeCount();
+	virtual std::string getAttributeType(size_t i);
+	std::vector<std::string> attributeTypes;
+	std::map<std::string, std::string> attributeMap;
+#endif
+
 private:
+
+	void loadProjectAttributes();
+	void loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Value& root);
+	bool checkIfPropertiesCanBeExtracted(IfcPPEntityEnum ppEnum);
+	void parsePropertySingleValue(Json::Value& valueObject, shared_ptr<IfcValue> value);
+
+	bool bAttributesExtraction;
 
 	bool bVertexReduction;
 
@@ -66,11 +105,21 @@ private:
 	};
 
 	std::vector<Polyhedron*> polyhedrons;
+
+	Json::Value objectPropertyRoot;
+	Json::Value projectPropertyRoot;
 };
 
 IfcLoader::IfcLoader()
 {
 	bVertexReduction = false;
+	bAttributesExtraction = false;
+
+	Json::Value projectProperty(Json::objectValue);
+	projectPropertyRoot["project"] = projectProperty;
+
+	Json::Value objectPropertyList(Json::arrayValue);
+	objectPropertyRoot["objects"] = objectPropertyList;
 }
 
 IfcLoader::~IfcLoader()
@@ -197,8 +246,8 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 								do
 								{
 									// start vertices of each edge
-									// °¢ edgeÀÇ start vertext¸¸ instanceÈ­ ÇÑ´Ù.
-									// ¿Ö³ÄÇÏ¸é ÇÑ edgeÀÇ end vertex´Â ´ÙÀ½ edgeÀÇ start vertexÀÌ¹Ç·Î.
+									// ê° edgeì˜ start vertextë§Œ instanceí™” í•œë‹¤.
+									// ì™œëƒí•˜ë©´ í•œ edgeì˜ end vertexëŠ” ë‹¤ìŒ edgeì˜ start vertexì´ë¯€ë¡œ.
 									carve::mesh::Vertex<3>* vertex_begin = edge->v1();
 
 									vertexIter = vertices.find(vertex_begin);
@@ -212,8 +261,8 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 
 									indices.push_back(vertexIndex);
 
-									// °¢ edgeÀÇ start vertext¸¸ instanceÈ­ ÇÑ´Ù.
-									// ¿Ö³ÄÇÏ¸é ÇÑ edgeÀÇ end vertex´Â ´ÙÀ½ edgeÀÇ start vertexÀÌ¹Ç·Î.
+									// ê° edgeì˜ start vertextë§Œ instanceí™” í•œë‹¤.
+									// ì™œëƒí•˜ë©´ í•œ edgeì˜ end vertexëŠ” ë‹¤ìŒ edgeì˜ start vertexì´ë¯€ë¡œ.
 
 									edge = edge->next;
 								} while (edge != face->edge);
@@ -282,8 +331,8 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 								do
 								{
 									// start vertices of each edge
-									// °¢ edgeÀÇ start vertext¸¸ instanceÈ­ ÇÑ´Ù.
-									// ¿Ö³ÄÇÏ¸é ÇÑ edgeÀÇ end vertex´Â ´ÙÀ½ edgeÀÇ start vertexÀÌ¹Ç·Î.
+									// ê° edgeì˜ start vertextë§Œ instanceí™” í•œë‹¤.
+									// ì™œëƒí•˜ë©´ í•œ edgeì˜ end vertexëŠ” ë‹¤ìŒ edgeì˜ start vertexì´ë¯€ë¡œ.
 									carve::mesh::Vertex<3>* vertex_begin = edge->v1();
 
 									vertices.push_back(vertex_begin);
@@ -344,7 +393,70 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 				}
 			}
 		}
+
+		if (this->bAttributesExtraction && checkIfPropertiesCanBeExtracted(ifc_product->m_entity_enum))
+			loadObjectAttributes(ifc_product, objectPropertyRoot);
 	}
+
+	return true;
+}
+
+bool IfcLoader::loadOnlyPropertiesFromIfc(std::wstring& filePath)
+{
+	// initializing
+	shared_ptr<MessageWrapper> mw(new MessageWrapper());
+	shared_ptr<IfcPPModel> ifc_model(new IfcPPModel());
+	shared_ptr<GeometryConverter> geometry_converter(new GeometryConverter(ifc_model));
+	shared_ptr<IfcPPReaderSTEP> reader(new IfcPPReaderSTEP());
+
+	reader->setMessageCallBack(mw.get(), &MessageWrapper::slotMessageWrapper);
+	geometry_converter->setMessageCallBack(mw.get(), &MessageWrapper::slotMessageWrapper);
+
+	// loading
+	reader->loadModelFromFile(filePath, ifc_model);
+
+	// conversion raw data into geometries of OSG type
+	osg::ref_ptr<osg::Switch> model_switch = new osg::Switch();
+	geometry_converter->createGeometryOSG(model_switch);
+
+	// contains the VEF graph for each IfcProduct:
+	std::map<int, shared_ptr<ProductShapeInputData> >& map_vef_data = geometry_converter->getShapeInputData();
+	double volume_all_products = 0;
+
+	std::map<int, shared_ptr<ProductShapeInputData> >::iterator it;
+	for (it = map_vef_data.begin(); it != map_vef_data.end(); ++it)
+		//for (auto it = map_vef_data.begin(); it != map_vef_data.end(); ++it)
+	{
+		// STEP entity id:
+		int entity_id = it->first;
+
+		// shape data
+		shared_ptr<ProductShapeInputData>& shape_data = it->second;
+
+		// IfcProduct(abstract type)
+		shared_ptr<IfcProduct> ifc_product(shape_data->m_ifc_product);
+
+		// filtering out IfcProduct of IfcSpace type
+		shared_ptr<IfcSpace> Ifc_Space = dynamic_pointer_cast<IfcSpace>(ifc_product);
+		if (Ifc_Space != NULL)
+			continue;
+
+		// filtering out IfcProduct of IfcSite type
+		shared_ptr<IfcSite> site_elem = dynamic_pointer_cast<IfcSite>(ifc_product);
+		if (site_elem != NULL)
+			continue;
+
+		if (!checkIfPropertiesCanBeExtracted(ifc_product->m_entity_enum))
+			continue;
+
+		loadObjectAttributes(ifc_product, objectPropertyRoot);
+	}
+
+#ifdef TMPTEST
+	std::map<std::string, std::string>::iterator iter = attributeMap.begin();
+	for (; iter != attributeMap.end(); iter++)
+		attributeTypes.push_back(iter->first);
+#endif
 
 	return true;
 }
@@ -352,6 +464,11 @@ bool IfcLoader::loadIfcFile(std::wstring& filePath)
 void IfcLoader::setVertexReductionMode(bool bOn)
 {
 	bVertexReduction = bOn;
+}
+
+void IfcLoader::setAttributesExtraction(bool bOn)
+{
+	bAttributesExtraction = bOn;
 }
 
 size_t IfcLoader::getPolyhedronCount()
@@ -393,6 +510,183 @@ size_t* IfcLoader::getTriangleIndices(size_t polyhedronIndex, size_t surfaceInde
 {
 	return polyhedrons[polyhedronIndex]->surfaces[surfaceIndex]->triangleIndices;
 }
+
+std::string IfcLoader::getObjectAttributes()
+{
+	std::string result;
+
+	Json::StyledWriter writer;
+	result = writer.write(objectPropertyRoot);
+
+	return result;
+}
+
+std::string IfcLoader::getProjectAttributes()
+{
+	std::string result;
+
+	Json::StyledWriter writer;
+	result = writer.write(projectPropertyRoot);
+
+	return result;
+}
+
+void IfcLoader::loadProjectAttributes()
+{}
+
+void IfcLoader::loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Value& root)
+{
+	Json::Value properties(Json::objectValue);
+	
+	// guid
+	std::string guid(CW2A(ifcProduct->m_GlobalId->m_value.c_str()));
+	properties["guid"] = guid;
+
+	// element type
+	IfcPPEntityEnum ppEnum = ifcProduct->m_entity_enum;
+	std::string elemType1(ifcProduct->className());
+	properties["entityType"] = elemType1;
+	//std::string elemType2( CW2A( ifcProduct->m_ObjectType->m_value.c_str()));
+	//properties["objectType"] = elemType2;
+	properties["propertySets"] = Json::Value(Json::arrayValue);
+
+	// properties
+	size_t propertySetCount = ifcProduct->m_IsDefinedBy_inverse.size();
+	for (size_t i = 0; i < propertySetCount; i++)
+	{
+		shared_ptr<IfcRelDefinesByProperties> propertySetWrapper = dynamic_pointer_cast<IfcRelDefinesByProperties>(ifcProduct->m_IsDefinedBy_inverse[i].lock());
+
+		shared_ptr<IfcPropertySet> propertySet = dynamic_pointer_cast<IfcPropertySet>(propertySetWrapper->m_RelatingPropertyDefinition);
+
+		Json::Value aSet(Json::objectValue);
+
+		if (!propertySet->m_Name->m_value.empty())
+			aSet["propertySetName"] = std::string(CW2A(propertySet->m_Name->m_value.c_str())); // @@@property set name
+		else
+			aSet["propertySetName"] = std::string("unknown");
+
+		Json::Value propertyAggr(Json::objectValue);
+		size_t propertyCount = propertySet->m_HasProperties.size();
+		for (size_t j = 0; j < propertyCount; j++)
+		{
+
+			// property key
+			std::string keyName;
+			if (!propertySet->m_HasProperties[j]->m_Name->m_value.empty())
+				keyName = std::string(CW2A(propertySet->m_HasProperties[j]->m_Name->m_value.c_str()));
+			else
+				keyName = std::string("key") + std::to_string(j);
+
+			// property value
+			if (dynamic_pointer_cast<IfcSimpleProperty>(propertySet->m_HasProperties[j]) != NULL)
+			{
+				if (dynamic_pointer_cast<IfcPropertySingleValue>(propertySet->m_HasProperties[j]) != NULL)
+				{
+					shared_ptr<IfcPropertySingleValue> singleValue = dynamic_pointer_cast<IfcPropertySingleValue>(propertySet->m_HasProperties[j]);
+
+					Json::Value valueObject(Json::objectValue);
+					this->parsePropertySingleValue(valueObject, singleValue->m_NominalValue);
+
+#ifdef TMPTEST
+					attributeMap.insert(std::map<std::string, std::string>::value_type(std::string(singleValue->m_NominalValue->className()), std::string(singleValue->m_NominalValue->className())));
+#endif
+					if(singleValue->m_Unit != NULL)
+					{
+						if (dynamic_pointer_cast<IfcNamedUnit>(singleValue->m_Unit) != NULL)
+						{
+							shared_ptr<IfcNamedUnit> namedUnit = dynamic_pointer_cast<IfcNamedUnit>(singleValue->m_Unit);
+							valueObject["unit"] = namedUnit->m_UnitType->m_enum;
+						}
+						else if (dynamic_pointer_cast<IfcMonetaryUnit>(singleValue->m_Unit) != NULL)
+						{
+							shared_ptr<IfcMonetaryUnit> monetaryUnit = dynamic_pointer_cast<IfcMonetaryUnit>(singleValue->m_Unit);
+							if (!monetaryUnit->m_Currency->m_value.empty())
+								valueObject["unit"] = std::string(CW2A(monetaryUnit->m_Currency->m_value.c_str()));
+							else
+								valueObject["unit"] = std::string("empty currency unit");
+						}
+						else if (dynamic_pointer_cast<IfcDerivedUnit>(singleValue->m_Unit) != NULL)
+						{
+							//shared_ptr<IfcDerivedUnit> derivedUnit = dynamic_pointer_cast<IfcDerivedUnit>(singleValue->m_Unit);
+							valueObject["unit"] = std::string("derived unit");
+						}
+						else
+							valueObject["unit"] = std::string("unknown unit");
+					}
+					propertyAggr[keyName] = valueObject;
+				}
+				else
+					propertyAggr[keyName] = std::string("unknown : ") +  std::string(propertySet->m_HasProperties[j]->className());
+			}
+			else
+				propertyAggr[keyName] = std::string("unknown : ") + std::string(propertySet->m_HasProperties[j]->className());
+		}
+		aSet["properties"] = propertyAggr;
+
+		properties["propertySets"].append(aSet);
+	}
+
+	root["objects"].append(properties);
+}
+
+bool IfcLoader::checkIfPropertiesCanBeExtracted(IfcPPEntityEnum ppEnum)
+{
+	switch (ppEnum)
+	{
+	case IfcPPEntityEnum::IFCANNOTATION:
+	case IfcPPEntityEnum::IFCANNOTATIONFILLAREA:
+		return false;
+	}
+	return true;
+}
+
+void IfcLoader::parsePropertySingleValue(Json::Value& valueObject, shared_ptr<IfcValue> value)
+{
+	if (dynamic_pointer_cast<IfcAreaMeasure>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcAreaMeasure>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcBoolean>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcBoolean>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcIdentifier>(value) != NULL)
+	{
+		if (dynamic_pointer_cast<IfcIdentifier>(value)->m_value.empty())
+			valueObject["value"] = std::string("");
+		else
+			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcIdentifier>(value)->m_value.c_str()));
+	}	
+	else if (dynamic_pointer_cast<IfcInteger>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcInteger>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcLabel>(value) != NULL)
+	{
+		if (dynamic_pointer_cast<IfcLabel>(value)->m_value.empty())
+			valueObject["value"] = std::string("");
+		else
+			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcLabel>(value)->m_value.c_str()));
+	}
+	else if (dynamic_pointer_cast<IfcLengthMeasure>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcLengthMeasure>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcPlaneAngleMeasure>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcPlaneAngleMeasure>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcPositiveLengthMeasure>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcPositiveLengthMeasure>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcReal>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcReal>(value)->m_value;
+	else if (dynamic_pointer_cast<IfcVolumeMeasure>(value) != NULL)
+		valueObject["value"] = dynamic_pointer_cast<IfcVolumeMeasure>(value)->m_value;
+	else
+		valueObject["value"] = std::string("unknown : ") + std::string(value->className());
+}
+
+#ifdef TMPTEST
+size_t IfcLoader::getAttributeTypeCount()
+{
+	return attributeTypes.size();
+}
+std::string IfcLoader::getAttributeType(size_t i)
+{
+	return attributeTypes[i];
+}
+#endif
+
 
 aIfcLoader* createIfcLoader()
 {

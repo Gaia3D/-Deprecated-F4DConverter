@@ -1,10 +1,10 @@
-
-// F4DConverterDoc.cpp : CF4DConverterDoc Å¬·¡½ºÀÇ ±¸Çö
+ï»¿
+// F4DConverterDoc.cpp : CF4DConverterDoc í´ë˜ìŠ¤ì˜ êµ¬í˜„
 //
 
 #include "stdafx.h"
-// SHARED_HANDLERS´Â ¹Ì¸® º¸±â, Ãà¼ÒÆÇ ±×¸² ¹× °Ë»ö ÇÊÅÍ Ã³¸®±â¸¦ ±¸ÇöÇÏ´Â ATL ÇÁ·ÎÁ§Æ®¿¡¼­ Á¤ÀÇÇÒ ¼ö ÀÖÀ¸¸ç
-// ÇØ´ç ÇÁ·ÎÁ§Æ®¿Í ¹®¼­ ÄÚµå¸¦ °øÀ¯ÇÏµµ·Ï ÇØ Áİ´Ï´Ù.
+// SHARED_HANDLERSëŠ” ë¯¸ë¦¬ ë³´ê¸°, ì¶•ì†ŒíŒ ê·¸ë¦¼ ë° ê²€ìƒ‰ í•„í„° ì²˜ë¦¬ê¸°ë¥¼ êµ¬í˜„í•˜ëŠ” ATL í”„ë¡œì íŠ¸ì—ì„œ ì •ì˜í•  ìˆ˜ ìˆìœ¼ë©°
+// í•´ë‹¹ í”„ë¡œì íŠ¸ì™€ ë¬¸ì„œ ì½”ë“œë¥¼ ê³µìœ í•˜ë„ë¡ í•´ ì¤ë‹ˆë‹¤.
 #ifndef SHARED_HANDLERS
 #include "F4DConverter.h"
 #endif
@@ -25,11 +25,11 @@ BEGIN_MESSAGE_MAP(CF4DConverterDoc, CDocument)
 END_MESSAGE_MAP()
 
 
-// CF4DConverterDoc »ı¼º/¼Ò¸ê
+// CF4DConverterDoc ìƒì„±/ì†Œë©¸
 
 CF4DConverterDoc::CF4DConverterDoc()
 {
-	// TODO: ¿©±â¿¡ ÀÏÈ¸¼º »ı¼º ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì¼íšŒì„± ìƒì„± ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 
 }
 
@@ -42,8 +42,8 @@ BOOL CF4DConverterDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: ¿©±â¿¡ ÀçÃÊ±âÈ­ ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
-	// SDI ¹®¼­´Â ÀÌ ¹®¼­¸¦ ´Ù½Ã »ç¿ëÇÕ´Ï´Ù.
+	// TODO: ì—¬ê¸°ì— ì¬ì´ˆê¸°í™” ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
+	// SDI ë¬¸ì„œëŠ” ì´ ë¬¸ì„œë¥¼ ë‹¤ì‹œ ì‚¬ìš©í•©ë‹ˆë‹¤.
 
 	return TRUE;
 }
@@ -57,20 +57,20 @@ void CF4DConverterDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: ¿©±â¿¡ ÀúÀå ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+		// TODO: ì—¬ê¸°ì— ì €ì¥ ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	}
 	else
 	{
-		// TODO: ¿©±â¿¡ ·Îµù ÄÚµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+		// TODO: ì—¬ê¸°ì— ë¡œë”© ì½”ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
 	}
 }
 
 #ifdef SHARED_HANDLERS
 
-// Ãà¼ÒÆÇ ±×¸²À» Áö¿øÇÕ´Ï´Ù.
+// ì¶•ì†ŒíŒ ê·¸ë¦¼ì„ ì§€ì›í•©ë‹ˆë‹¤.
 void CF4DConverterDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 {
-	// ¹®¼­ÀÇ µ¥ÀÌÅÍ¸¦ ±×¸®·Á¸é ÀÌ ÄÚµå¸¦ ¼öÁ¤ÇÏ½Ê½Ã¿À.
+	// ë¬¸ì„œì˜ ë°ì´í„°ë¥¼ ê·¸ë¦¬ë ¤ë©´ ì´ ì½”ë“œë¥¼ ìˆ˜ì •í•˜ì‹­ì‹œì˜¤.
 	dc.FillSolidRect(lprcBounds, RGB(255, 255, 255));
 
 	CString strText = _T("TODO: implement thumbnail drawing here");
@@ -88,14 +88,14 @@ void CF4DConverterDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	dc.SelectObject(pOldFont);
 }
 
-// °Ë»ö Ã³¸®±â¸¦ Áö¿øÇÕ´Ï´Ù.
+// ê²€ìƒ‰ ì²˜ë¦¬ê¸°ë¥¼ ì§€ì›í•©ë‹ˆë‹¤.
 void CF4DConverterDoc::InitializeSearchContent()
 {
 	CString strSearchContent;
-	// ¹®¼­ÀÇ µ¥ÀÌÅÍ¿¡¼­ °Ë»ö ÄÜÅÙÃ÷¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-	// ÄÜÅÙÃ÷ ºÎºĞÀº ";"·Î ±¸ºĞµÇ¾î¾ß ÇÕ´Ï´Ù.
+	// ë¬¸ì„œì˜ ë°ì´í„°ì—ì„œ ê²€ìƒ‰ ì½˜í…ì¸ ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
+	// ì½˜í…ì¸  ë¶€ë¶„ì€ ";"ë¡œ êµ¬ë¶„ë˜ì–´ì•¼ í•©ë‹ˆë‹¤.
 
-	// ¿¹: strSearchContent = _T("point;rectangle;circle;ole object;");
+	// ì˜ˆ: strSearchContent = _T("point;rectangle;circle;ole object;");
 	SetSearchContent(strSearchContent);
 }
 
@@ -119,7 +119,7 @@ void CF4DConverterDoc::SetSearchContent(const CString& value)
 
 #endif // SHARED_HANDLERS
 
-// CF4DConverterDoc Áø´Ü
+// CF4DConverterDoc ì§„ë‹¨
 
 #ifdef _DEBUG
 void CF4DConverterDoc::AssertValid() const
@@ -134,4 +134,4 @@ void CF4DConverterDoc::Dump(CDumpContext& dc) const
 #endif //_DEBUG
 
 
-// CF4DConverterDoc ¸í·É
+// CF4DConverterDoc ëª…ë ¹
