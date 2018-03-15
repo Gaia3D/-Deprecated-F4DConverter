@@ -1,3 +1,6 @@
+- 2018. 3. 15
+- changed the code page of extracted attribute string from .ifc files from EUC-KR to UTF-8
+
 - 2018. 3. 05
 -- changed the code pages of all .cpp and .h files into UTF-8(with BOM)
 -- changed the code page of F4DConverter.rc into UTF-8
