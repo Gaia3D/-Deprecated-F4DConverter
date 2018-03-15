@@ -539,14 +539,14 @@ void IfcLoader::loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Va
 	Json::Value properties(Json::objectValue);
 	
 	// guid
-	std::string guid(CW2A(ifcProduct->m_GlobalId->m_value.c_str()));
+	std::string guid(CW2A(ifcProduct->m_GlobalId->m_value.c_str(), CP_UTF8));
 	properties["guid"] = guid;
 
 	// element type
 	IfcPPEntityEnum ppEnum = ifcProduct->m_entity_enum;
 	std::string elemType1(ifcProduct->className());
 	properties["entityType"] = elemType1;
-	//std::string elemType2( CW2A( ifcProduct->m_ObjectType->m_value.c_str()));
+	//std::string elemType2( CW2A( ifcProduct->m_ObjectType->m_value.c_str(), CP_UTF8));
 	//properties["objectType"] = elemType2;
 	properties["propertySets"] = Json::Value(Json::arrayValue);
 
@@ -561,7 +561,7 @@ void IfcLoader::loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Va
 		Json::Value aSet(Json::objectValue);
 
 		if (!propertySet->m_Name->m_value.empty())
-			aSet["propertySetName"] = std::string(CW2A(propertySet->m_Name->m_value.c_str())); // @@@property set name
+			aSet["propertySetName"] = std::string(CW2A(propertySet->m_Name->m_value.c_str(), CP_UTF8)); // @@@property set name
 		else
 			aSet["propertySetName"] = std::string("unknown");
 
@@ -573,7 +573,7 @@ void IfcLoader::loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Va
 			// property key
 			std::string keyName;
 			if (!propertySet->m_HasProperties[j]->m_Name->m_value.empty())
-				keyName = std::string(CW2A(propertySet->m_HasProperties[j]->m_Name->m_value.c_str()));
+				keyName = std::string(CW2A(propertySet->m_HasProperties[j]->m_Name->m_value.c_str(), CP_UTF8));
 			else
 				keyName = std::string("key") + std::to_string(j);
 
@@ -601,7 +601,7 @@ void IfcLoader::loadObjectAttributes(shared_ptr<IfcProduct> ifcProduct, Json::Va
 						{
 							shared_ptr<IfcMonetaryUnit> monetaryUnit = dynamic_pointer_cast<IfcMonetaryUnit>(singleValue->m_Unit);
 							if (!monetaryUnit->m_Currency->m_value.empty())
-								valueObject["unit"] = std::string(CW2A(monetaryUnit->m_Currency->m_value.c_str()));
+								valueObject["unit"] = std::string(CW2A(monetaryUnit->m_Currency->m_value.c_str(), CP_UTF8));
 							else
 								valueObject["unit"] = std::string("empty currency unit");
 						}
@@ -651,7 +651,7 @@ void IfcLoader::parsePropertySingleValue(Json::Value& valueObject, shared_ptr<If
 		if (dynamic_pointer_cast<IfcIdentifier>(value)->m_value.empty())
 			valueObject["value"] = std::string("");
 		else
-			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcIdentifier>(value)->m_value.c_str()));
+			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcIdentifier>(value)->m_value.c_str(), CP_UTF8));
 	}	
 	else if (dynamic_pointer_cast<IfcInteger>(value) != NULL)
 		valueObject["value"] = dynamic_pointer_cast<IfcInteger>(value)->m_value;
@@ -660,7 +660,7 @@ void IfcLoader::parsePropertySingleValue(Json::Value& valueObject, shared_ptr<If
 		if (dynamic_pointer_cast<IfcLabel>(value)->m_value.empty())
 			valueObject["value"] = std::string("");
 		else
-			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcLabel>(value)->m_value.c_str()));
+			valueObject["value"] = std::string(CW2A(dynamic_pointer_cast<IfcLabel>(value)->m_value.c_str(), CP_UTF8));
 	}
 	else if (dynamic_pointer_cast<IfcLengthMeasure>(value) != NULL)
 		valueObject["value"] = dynamic_pointer_cast<IfcLengthMeasure>(value)->m_value;
